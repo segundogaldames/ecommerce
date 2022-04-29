@@ -1,0 +1,29 @@
+$(document).ready(function () {
+  $("#table").DataTable({
+    language: {
+      url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+    },
+    order: [[0, "desc"]],
+    dom: "lBfrtip",
+    buttons: [
+      {
+        extend: "copy",
+        text: '<i class="far fa copy"></i>Copiar',
+        titleAttr: "Copiar",
+        className: "btn btn-sm",
+      },
+      {
+        extend: "excel",
+        text: '<i class="fa fa-table"></i>Excel',
+        titleAttr: "Exportar a Excel",
+        className: "btn btn-sm",
+      },
+      {
+        extend: "pdf",
+        text: '<i class="far fa-file-pdf-o"></i>PDF',
+        titleAttr: "Exportar a PDF",
+        className: "btn btn-sm",
+      },
+    ],
+  });
+});
