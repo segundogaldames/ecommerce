@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <div class="tile-body">Bienvenido al Dashboardd</div>
+                <div class="tile-body">Bienvenido {Session::get('usuario_name')}</div>
             </div>
         </div>
     </div>

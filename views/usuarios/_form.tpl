@@ -28,6 +28,9 @@
     <div class="form-group">
         <label for="rol" class="control-label">Rol<span class="text-danger">*</span></label>
         <select name="rol" class="form-control">
+            {if $button == 'Editar'}
+                <option value="{$usuario.rol_id}">{$usuario.rol.nombre}</option>
+            {/if}
             <option value="">Seleccione...</option>
             {foreach from=$roles item=rol}
                 <option value="{$rol.id}">{$rol.nombre}</option>
@@ -50,7 +53,7 @@
     {if $button == 'Editar'}
         <div class="form-group">
             <label for="status" class="control-label">Status<span class="text-danger">*</span></label>
-            <select name="activo" class="form-control">
+            <select name="status" class="form-control">
                 <option value="{$usuario.status}">
                     {if $usuario.status == 1}
                         Activo

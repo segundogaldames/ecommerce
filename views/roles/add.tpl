@@ -1,8 +1,8 @@
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> Roles</h1>
-            <p>Roles de usuarios</p>
+            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> {$titulo}</h1>
+            <p>{$tema}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>

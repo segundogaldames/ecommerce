@@ -1,11 +1,11 @@
 <main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> Usuarios
+            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> {$titulo}
                 <a href="{$_layoutParams.root}usuarios/add" class="btn btn-outline-dark"><i class="fa fa-user"
                         aria-hidden="true"></i>Crear Usuario</a>
             </h1>
-            <p>Roles de usuarios</p>
+            <p>{$tema}</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>

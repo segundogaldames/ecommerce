@@ -6,7 +6,7 @@
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-            <li class="breadcrumb-item"><a href="{$_layoutParams.root}roles">Roles</a></li>
+            <li class="breadcrumb-item"><a href="{$_layoutParams.root}usuarios">Usuarios</a></li>
         </ul>
     </div>
     <div class="row">
@@ -20,17 +20,33 @@
 
                 <table class="table table-hover">
                     <tr>
-                        <th>Rol:</th>
-                        <td>{$rol.nombre}</td>
+                        <th>RUT:</th>
+                        <td>{$usuario.rut}</td>
                     </tr>
                     <tr>
-                        <th>Descripción:</th>
-                        <td>{$rol.descripcion}</td>
+                        <th>Nombres:</th>
+                        <td>{$usuario.name}</td>
+                    </tr>
+                    <tr>
+                        <th>Apellidos:</th>
+                        <td>{$usuario.lastname}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{$usuario.email}</td>
+                    </tr>
+                    <tr>
+                        <th>Teléfono:</th>
+                        <td>{$usuario.phone}</td>
+                    </tr>
+                    <tr>
+                        <th>Rol:</th>
+                        <td>{$usuario.rol.nombre}</td>
                     </tr>
                     <tr>
                         <th>Status:</th>
                         <td>
-                            {if $rol.status == 1}
+                            {if $usuario.status == 1}
                                 Activo
                             {else}
                                 Inactivo
@@ -39,17 +55,17 @@
                     </tr>
                     <tr>
                         <th>Creado:</th>
-                        <td>{$rol.created_at|date_format:"%d-%m-%Y %H:%M:%S"}</td>
+                        <td>{$usuario.created_at|date_format:"%d-%m-%Y %H:%M:%S"}</td>
                     </tr>
                     <tr>
                         <th>Modificado:</th>
-                        <td>{$rol.updated_at|date_format:"%d-%m-%Y %H:%M:%S"}</td>
+                        <td>{$usuario.updated_at|date_format:"%d-%m-%Y %H:%M:%S"}</td>
                     </tr>
                 </table>
                 <p>
-                    <a href="{$_layoutParams.root}roles/edit/{$rol.id}"
+                    <a href="{$_layoutParams.root}usuarios/edit/{$usuario.id}"
                         class="btn btn-outline-primary btn-sm">Editar</a>
-                    <a href="{$_layoutParams.root}roles/" class="btn btn-outline-primary btn-sm">Volver</a>
+                    <a href="{$_layoutParams.root}usuarios/" class="btn btn-outline-primary btn-sm">Volver</a>
                 </p>
             </div>
         </div>

@@ -8,6 +8,7 @@ class rolesController extends Controller
         parent::__construct();
         // $this->verificarSession();
         // $this->verificarRolAdmin();
+        $this->tema = 'Roles de usuarios';
     }
 
     public function index()
@@ -16,6 +17,7 @@ class rolesController extends Controller
 
         $this->_view->assign('titulo','Roles');
         $this->_view->assign('title','Lista de Roles');
+        $this->_view->assign('tema', $this->tema);
         $this->_view->assign('roles', Rol::select('id','nombre','descripcion','status')->orderBy('id', 'desc')->get());
         $this->_view->renderizar('index');
     }
@@ -27,6 +29,7 @@ class rolesController extends Controller
 
         $this->_view->assign('titulo','Rol');
         $this->_view->assign('title','Detalle Rol');
+        $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
         $this->_view->renderizar('view');
     }
@@ -38,6 +41,7 @@ class rolesController extends Controller
         $this->_view->assign('titulo','Editar Rol');
         $this->_view->assign('title','Editar Rol');
         $this->_view->assign('button','Editar');
+        $this->_view->assign('tema', $this->tema);
         $this->_view->assign('ruta','roles/view/' . $this->filtrarInt($id));
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
         $this->_view->assign('enviar', CTRL);
@@ -95,6 +99,7 @@ class rolesController extends Controller
         $this->_view->assign('titulo','Nuevo Rol');
         $this->_view->assign('title','Nuevo Rol');
         $this->_view->assign('button','Guardar');
+        $this->_view->assign('tema', $this->tema);
         $this->_view->assign('ruta','roles');
         $this->_view->assign('enviar', CTRL);
 
