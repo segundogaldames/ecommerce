@@ -4,7 +4,33 @@ class Helper
 {
     public static function getRolAdmin()
     {
+        if (Session::get('usuario_rol') == 'Administrador') {
+            return true;
+        }
 
+        return false;
+    }
+
+    public static function getRolAdminSuper()
+    {
+        if (Session::get('usuario_rol') == 'Administrador' || Session::get('usuario_rol') == 'Supervisor') {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function getIniciales($nombre)
+    {
+        if ($nombre) {
+            $name = '';
+            $explode = explode(' ', $nombre);
+            foreach ($explode as $ex) {
+                $name .= $ex[0];
+            }
+
+            return $name;
+        }
     }
 
     public static function sendEmail($data,$template)

@@ -46,8 +46,7 @@
         </div>
         <div class="form-group">
             <label for="reclave" class="control-label">Confirmar Password<span class="text-danger">*</span></label>
-            <input type="password" name="reclave" class="form-control" id="" aria-describedby=""
-    placeholder="Confirmar password del usuario" onpaste="return false">
+            <input type="password" name="reclave" class="form-control" id="" aria-describedby="" placeholder="Confirmar password del usuario" onpaste="return false">
         </div>
     {/if}
     {if $button == 'Editar'}
@@ -68,5 +67,5 @@
     {/if}
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
-    <a href="{$_layoutParams.root}{$ruta}" class="btn btn-outline-primary">Cancelar</a>
+    <a href="{$_layoutParams.root}usuarios" class="btn btn-outline-primary">Cancelar</a>
 </form>

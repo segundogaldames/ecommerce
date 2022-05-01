@@ -128,7 +128,7 @@ class Session
 	{
 		if(!Session::get('tiempo') || !defined('SESSION_TIME')):
 			throw new Exception("Tiempo de session no definido");
-			
+
 		endif;
 
 		if(SESSION_TIME == 0): //se asume que el tiempo de session es indefinido
@@ -137,7 +137,7 @@ class Session
 
 		if(time() - Session::get('tiempo') > (SESSION_TIME * 60)):
 			Session::destroy();
-			header('Location: ' . BASE_URL . 'error/access/8080');
+			header('Location: ' . BASE_URL . 'usuarios/logout');
 		else:
 			Session::set('tiempo', time());
 		endif;

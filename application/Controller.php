@@ -32,25 +32,19 @@ abstract class Controller
 	}
 
 	protected function verificarRolAdmin(){
-		foreach (Session::get('usuario_roles')->funcionarioRol as $funcionarioRol) {
-			//echo $funcionarioRol->rol->nombre;
-			if ($funcionarioRol->rol->nombre == 'Administrador(a)') {
-				return true;
-			}
+		if (Session::get('usuario_rol') == 'Administrador') {
+			return true;
 		}
 
-		$this->redireccionar('funcionarios/miPerfil');
+		$this->redireccionar();
 	}
 
 	protected function verificarRolAdminSuper(){
-		foreach (Session::get('usuario_roles')->funcionarioRol as $funcionarioRol) {
-			//echo $funcionarioRol->rol->nombre;
-			if ($funcionarioRol->rol->nombre == 'Administrador(a)' || $funcionarioRol->rol->nombre == 'Supervisor(a)') {
-				return true;
-			}
+		if (Session::get('usuario_rol') == 'Administrador' || Session::get('usuario_rol') == 'Supervisor') {
+			return true;
 		}
 
-		$this->redireccionar('funcionarios/miPerfil');
+		$this->redireccionar();
 	}
 
 	protected function verificarRolAdminVeterinario(){

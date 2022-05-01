@@ -6,8 +6,8 @@ class rolesController extends Controller
     public function __construct()
     {
         parent::__construct();
-        // $this->verificarSession();
-        // $this->verificarRolAdmin();
+        $this->verificarSession();
+        $this->verificarRolAdmin();
         $this->tema = 'Roles de usuarios';
     }
 
@@ -42,7 +42,6 @@ class rolesController extends Controller
         $this->_view->assign('title','Editar Rol');
         $this->_view->assign('button','Editar');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('ruta','roles/view/' . $this->filtrarInt($id));
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
         $this->_view->assign('enviar', CTRL);
 
@@ -100,7 +99,6 @@ class rolesController extends Controller
         $this->_view->assign('title','Nuevo Rol');
         $this->_view->assign('button','Guardar');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('ruta','roles');
         $this->_view->assign('enviar', CTRL);
 
         if ($this->getAlphaNum('enviar') == CTRL) {

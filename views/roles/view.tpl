@@ -47,8 +47,6 @@
                     </tr>
                 </table>
                 <p>
-                    <a href="{$_layoutParams.root}roles/edit/{$rol.id}"
-                        class="btn btn-outline-primary btn-sm">Editar</a>
                     <a href="{$_layoutParams.root}roles/" class="btn btn-outline-primary btn-sm">Volver</a>
                 </p>
             </div>
