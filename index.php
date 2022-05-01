@@ -1,6 +1,6 @@
 <?php
 
-#echo phpinfo();exit;
+//echo phpinfo();exit;
 ini_set('display_errors', 1);
 
 define('DS', DIRECTORY_SEPARATOR);

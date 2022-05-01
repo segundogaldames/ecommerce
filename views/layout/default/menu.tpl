@@ -42,9 +42,20 @@
 						class="app-menu__icon fa fa-cart-arrow-down" aria-hidden="true"></i><span
 						class="app-menu__label">Pedidos</span></a>
 			</li>
-			<li>
-				<a class="app-menu__item" href="{$_layoutParams.root}productos"><i class="app-menu__icon fa fa-product-hunt"
-						aria-hidden="true"></i><span class="app-menu__label">Productos</span></a>
+			<li class="treeview"><a class="app-menu__item" href="#" data-toggle="treeview">
+						<i class="app-menu__icon fa fa-product-hunt" aria-hidden="true"></i></i><span
+						class="app-menu__label">Productos</span><i class="treeview-indicator fa fa-angle-right"></i></a>
+				<ul class="treeview-menu">
+					<li><a class="treeview-item" href="{$_layoutParams.root}categorias">
+							<i class="app-menu__icon fa fa-folder-plus"></i>
+							Categorias</a>
+					</li>
+
+					<li><a class="treeview-item" href="{$_layoutParams.root}productos" rel="noopener">
+						<i class="app-menu__icon fa fa-product-hunt" aria-hidden="true"></i> Productos</a>
+					</li>
+
+				</ul>
 			</li>
 			<li>
 				<a class="app-menu__item" href="{$_layoutParams.root}usuarios/logout"><i
