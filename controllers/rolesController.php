@@ -5,8 +5,9 @@ class rolesController extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
         $this->verificarSession();
+        Session::tiempo();
+        parent::__construct();
         $this->verificarRolAdmin();
         $this->tema = 'Roles de usuarios';
     }

@@ -3,12 +3,11 @@ use models\Usuario;
 
 class clientesController extends Controller
 {
-	private $_enlace;
 
 	public function __construct(){
+		$this->verificarSession();
 		Session::tiempo();
 		parent::__construct();
-		$this->verificarSession();
         $this->verificarRolAdminSuper();
         $this->tema = 'Clientes de la tienda';
 	}

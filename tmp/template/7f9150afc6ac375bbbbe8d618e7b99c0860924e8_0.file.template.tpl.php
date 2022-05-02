@@ -1,11 +1,11 @@
 <?php
-/* Smarty version 4.0.0-rc.0, created on 2022-04-29 14:39:36
+/* Smarty version 4.0.0-rc.0, created on 2022-05-01 19:30:38
   from '/var/www/html/ecommerce/views/layout/default/template.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0-rc.0',
-  'unifunc' => 'content_626c30e8edbee1_91916149',
+  'unifunc' => 'content_626f181e8e3044_53957351',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
@@ -22,7 +22,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:menu.tpl' => 1,
   ),
 ),false)) {
-function content_626c30e8edbee1_91916149 (Smarty_Internal_Template $_smarty_tpl) {
+function content_626f181e8e3044_53957351 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
    <head>

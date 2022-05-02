@@ -3,13 +3,11 @@ use models\Categoria;
 
 class categoriasController extends Controller
 {
-	private $_enlace;
-
 	public function __construct(){
+		$this->verificarSession();
 		Session::tiempo();
 		parent::__construct();
-		$this->verificarSession();
-        #$this->verificarRolAdminSuper();
+        $this->verificarRolAdminSuper();
         $this->tema = 'Categorías de productos';
 	}
 

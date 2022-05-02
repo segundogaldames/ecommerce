@@ -2,12 +2,11 @@
 
 class indexController extends Controller
 {
-	private $_enlace;
 
 	public function __construct(){
+		$this->verificarSession();
 		Session::tiempo();
 		parent::__construct();
-		$this->verificarSession();
 	}
 
 	public function index()

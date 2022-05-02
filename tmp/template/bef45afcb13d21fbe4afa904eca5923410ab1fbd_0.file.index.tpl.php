@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.0.0-rc.0, created on 2022-04-29 15:00:39
+/* Smarty version 4.0.0-rc.0, created on 2022-05-01 19:33:54
   from '/var/www/html/ecommerce/views/usuarios/index.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0-rc.0',
-  'unifunc' => 'content_626c35d76e2ae5_31604549',
+  'unifunc' => 'content_626f18e2c709a0_27222970',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'bef45afcb13d21fbe4afa904eca5923410ab1fbd' => 
     array (
       0 => '/var/www/html/ecommerce/views/usuarios/index.tpl',
-      1 => 1651255285,
+      1 => 1651265362,
       2 => 'file',
     ),
   ),
@@ -21,16 +21,18 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:../partials/_mensajes.tpl' => 1,
   ),
 ),false)) {
-function content_626c35d76e2ae5_31604549 (Smarty_Internal_Template $_smarty_tpl) {
+function content_626f18e2c709a0_27222970 (Smarty_Internal_Template $_smarty_tpl) {
 ?><main class="app-content">
     <div class="app-title">
         <div>
-            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> Usuarios
+            <h1><i class="icon fa fa-user-plus" aria-hidden="true"></i> <?php echo $_smarty_tpl->tpl_vars['titulo']->value;?>
+
                 <a href="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['root'];?>
 usuarios/add" class="btn btn-outline-dark"><i class="fa fa-user"
                         aria-hidden="true"></i>Crear Usuario</a>
             </h1>
-            <p>Roles de usuarios</p>
+            <p><?php echo $_smarty_tpl->tpl_vars['tema']->value;?>
+</p>
         </div>
         <ul class="app-breadcrumb breadcrumb">
             <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
