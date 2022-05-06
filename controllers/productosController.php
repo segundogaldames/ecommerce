@@ -33,7 +33,8 @@ class productosController extends Controller
         $this->_view->assign('titulo', 'Producto');
         $this->_view->assign('title','Detalle de Producto');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('producto', Producto::with('categoria')->find($this->filtrarInt($id)));
+        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('producto', Producto::with('categoria','imagenes')->find($this->filtrarInt($id)));
 
         $this->_view->renderizar('view');
     }

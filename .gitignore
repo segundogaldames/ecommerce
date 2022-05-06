@@ -3,4 +3,4 @@ application/Bootstrap.php
 application/Config.php
 application/Hash.php
 application/Request.php
-tmp/
+tmp/*

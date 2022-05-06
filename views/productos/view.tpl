@@ -63,13 +63,32 @@
                 </table>
                 <p>
                     <a href="{$_layoutParams.root}productos/" class="btn btn-outline-primary btn-sm">Volver</a>
+                    <a href="{$_layoutParams.root}imagenes/add/{$producto.id}" class="btn btn-outline-success btn-sm">Agregar Imagen</a>
                 </p>
             </div>
             <div class="tile">
                 <h3>Imágenes</h3>
                 {include file="../partials/_mensajes.tpl"}
 
-
+                {if isset($producto->imagenes) && count($producto->imagenes)}
+                    <div class="row">
+                        {foreach from=$producto->imagenes item=imagen}
+                            <div class="card" style="width: 18rem;">
+                                <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" class="card-img-top" alt="...">
+                                <div class="card-body text-center">
+                                    <form name="form" action="{$_layoutParams.root}imagenes/delete" method="post">
+                                        <input type="hidden" name="enviar" value="{$enviar}">
+                                        <input type="hidden" name="imagen" value="{$imagen.id}">
+                                        <button class="btn btn-outline-dark" onclick="eliminar('{$imagen.img}')"><i
+class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        {/foreach}
+                    </div>
+                {else}
+                    <p class="text-info">No hay imágenes registradas</p>
+                {/if}
             </div>
         </div>
     </div>

@@ -33,3 +33,14 @@ $(document).ready(function () {
     return false;
   });
 });
+
+function eliminar(value) {
+  form = document.form;
+  let eliminar = confirm('¿Desea eliminar' + value + '?');
+
+  if (eliminar) {
+    form.submit();
+  }else{
+    return false
+  }
+}
