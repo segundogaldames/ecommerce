@@ -1,4 +1,7 @@
 <?php
+use models\Permiso;
+use models\Modulo;
+use models\Rol;
 
 class Helper
 {
@@ -32,6 +35,29 @@ class Helper
             return $name;
         }
     }
+
+    public static function getPermisos($data){
+        //print_r($data);exit;
+        if ($data) {
+            $modulo = Modulo::select('id')->where('titulo', $data)->first();
+            $rol = Rol::select('id')->where('nombre', Session::get('usuario_rol'))->first();
+            # code...
+            //print_r($rol->id);exit;
+            $permisos = Permiso::select('id','leer','escribir','actualizar','eliminar')
+                ->where('modulo_id', $modulo->id)
+                ->where('rol_id', $rol->id)
+                ->first();
+
+                #print_r($permisos);exit;
+            if ($permisos) {
+                return $permisos;
+            }
+        }
+        Session::set('msg_error','Acceso prohibido');
+        header('Location: ' . BASE_URL);
+
+    }
+
 
     public static function sendEmail($data,$template)
     {

@@ -6,8 +6,8 @@ class categoriasController extends Controller
 	public function __construct(){
 		$this->verificarSession();
 		Session::tiempo();
-		parent::__construct();
         $this->verificarRolAdminSuper();
+		parent::__construct();
         $this->tema = 'Categorías de productos';
 	}
 

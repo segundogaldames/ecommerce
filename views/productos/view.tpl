@@ -63,7 +63,9 @@
                 </table>
                 <p>
                     <a href="{$_layoutParams.root}productos/" class="btn btn-outline-primary btn-sm">Volver</a>
-                    <a href="{$_layoutParams.root}imagenes/add/{$producto.id}" class="btn btn-outline-success btn-sm">Agregar Imagen</a>
+                    {if Helper::getRolAdmin()}
+                        <a href="{$_layoutParams.root}imagenes/add/{$producto.id}" class="btn btn-outline-success btn-sm">Agregar Imagen</a>
+                    {/if}
                 </p>
             </div>
             <div class="tile">
@@ -76,12 +78,13 @@
                             <div class="card" style="width: 18rem;">
                                 <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" class="card-img-top" alt="...">
                                 <div class="card-body text-center">
-                                    <form name="form" action="{$_layoutParams.root}imagenes/delete" method="post">
-                                        <input type="hidden" name="enviar" value="{$enviar}">
-                                        <input type="hidden" name="imagen" value="{$imagen.id}">
-                                        <button class="btn btn-outline-dark" onclick="eliminar('{$imagen.img}')"><i
-class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                    </form>
+                                    {if Helper::getRolAdmin()}
+                                        <form name="form" action="{$_layoutParams.root}imagenes/delete" method="post">
+                                            <input type="hidden" name="enviar" value="{$enviar}">
+                                            <input type="hidden" name="imagen" value="{$imagen.id}">
+                                            <button type="submit" class="btn btn-outline-dark"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                        </form>
+                                    {/if}
                                 </div>
                             </div>
                         {/foreach}

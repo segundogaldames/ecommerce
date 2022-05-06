@@ -8,6 +8,7 @@ class imagenesController extends Controller
 	public function __construct(){
 		$this->verificarSession();
 		Session::tiempo();
+        $this->verificarRolAdmin();
 		parent::__construct();
         $this->tema = 'Imágenes de productos';
 	}

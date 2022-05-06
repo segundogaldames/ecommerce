@@ -36,6 +36,10 @@
 					<a class="app-menu__item" href="{$_layoutParams.root}clientes"><i class="app-menu__icon fa fa-user"
 							aria-hidden="true"></i><span class="app-menu__label">Clientes</span></a>
 				</li>
+				<li>
+					<a class="app-menu__item" href="{$_layoutParams.root}modulos"><i class="app-menu__icon fa fa-bars"
+							aria-hidden="true"></i><span class="app-menu__label">Módulos</span></a>
+				</li>
 			{/if}
 			<li>
 				<a class="app-menu__item" href="{$_layoutParams.root}pedidos"><i

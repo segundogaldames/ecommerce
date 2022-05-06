@@ -36,11 +36,14 @@ $(document).ready(function () {
 
 function eliminar(value) {
   form = document.form;
-  let eliminar = confirm('¿Desea eliminar' + value + '?');
+  let eliminar = confirm('¿Desea eliminar ' + value + '?');
 
   if (eliminar) {
     form.submit();
   }else{
-    return false
+
+    window.location.href = "http://localhost:8080/ecommerce/productos/";
   }
+
+
 }

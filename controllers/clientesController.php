@@ -8,12 +8,18 @@ class clientesController extends Controller
 		$this->verificarSession();
 		Session::tiempo();
 		parent::__construct();
-        $this->verificarRolAdminSuper();
+        //$this->verificarRolAdminSuper();
         $this->tema = 'Clientes de la tienda';
+		$this->permisos = Helper::getPermisos('Clientes');
 	}
 
 	public function index()
 	{
+		//print_r($this->permisos);exit;
+		if ($this->permisos->leer != 1) {
+			Session::set('msg_error','Acceso prohibido');
+			$this->redireccionar();
+		}
 		$this->verificarMensajes();
 
 		$this->_view->assign('titulo', 'Clientes');
@@ -23,4 +29,7 @@ class clientesController extends Controller
 
 		$this->_view->renderizar('index');
 	}
+
+	########################################################
+
 }

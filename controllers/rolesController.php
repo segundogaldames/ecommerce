@@ -8,12 +8,18 @@ class rolesController extends Controller
         $this->verificarSession();
         Session::tiempo();
         parent::__construct();
-        $this->verificarRolAdmin();
+        //$this->verificarRolAdmin();
         $this->tema = 'Roles de usuarios';
+        $this->permisos = Helper::getPermisos('Roles');
     }
 
     public function index()
     {
+        if ($this->permisos->leer != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarMensajes();
 
         $this->_view->assign('titulo','Roles');
@@ -25,6 +31,11 @@ class rolesController extends Controller
 
     public function view($id = null)
     {
+        if ($this->permisos->leer != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarRol($id);
         $this->verificarMensajes();
 
@@ -37,6 +48,11 @@ class rolesController extends Controller
 
     public function edit($id = null)
     {
+        if ($this->permisos->actualizar != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarRol($id);
 
         $this->_view->assign('titulo','Editar Rol');
@@ -96,6 +112,11 @@ class rolesController extends Controller
 
     public function add()
     {
+        if ($this->permisos->escribir != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->_view->assign('titulo','Nuevo Rol');
         $this->_view->assign('title','Nuevo Rol');
         $this->_view->assign('button','Guardar');
