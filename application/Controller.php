@@ -1,4 +1,7 @@
 <?php
+use models\Modulo;
+use models\Rol;
+use models\Permiso;
 //esta clase no puede ser instanciada
 abstract class Controller
 {
@@ -27,7 +30,7 @@ abstract class Controller
 
 	protected function verificarSession(){
 		if (!Session::get('autenticado')) {
-			$this->redireccionar('usuarios/login');
+			$this->redireccionar('login/login');
 		}
 	}
 
@@ -47,15 +50,24 @@ abstract class Controller
 		$this->redireccionar();
 	}
 
-	protected function verificarRolAdminVeterinario(){
-		foreach (Session::get('usuario_roles')->funcionarioRol as $funcionarioRol) {
-		//echo $funcionarioRol->rol->nombre;
-			if ($funcionarioRol->rol->nombre == 'Administrador(a)' || $funcionarioRol->rol->nombre == 'Veterinario(a)') {
-				return true;
+	protected function getPermisos($modelo){
+		//print_r($data);exit;
+		if ($modelo) {
+			$modulo = Modulo::select('id')->where('titulo', $modelo)->first();
+			$rol = Rol::select('id')->where('nombre', Session::get('usuario_rol'))->first();
+			# code...
+			//print_r($rol->id);exit;
+			$permisos = Permiso::select('id','leer','escribir','actualizar','eliminar')
+						->where('modulo_id', $modulo->id)
+						->where('rol_id', $rol->id)
+						->first();
+
+			#print_r($permisos);exit;
+			if ($permisos) {
+				return $permisos;
 			}
 		}
-
-		$this->redireccionar('funcionarios/miPerfil');
+		return false;
 	}
 
 	protected  function verificarMensajes(){

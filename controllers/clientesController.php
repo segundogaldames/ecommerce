@@ -10,12 +10,12 @@ class clientesController extends Controller
 		parent::__construct();
         //$this->verificarRolAdminSuper();
         $this->tema = 'Clientes de la tienda';
-		$this->permisos = Helper::getPermisos('Clientes');
+		$this->permisos = $this->getPermisos('Clientes');
 	}
 
 	public function index()
 	{
-		//print_r($this->permisos);exit;
+		#print_r($this->permisos);exit;
 		if ($this->permisos->leer != 1) {
 			Session::set('msg_error','Acceso prohibido');
 			$this->redireccionar();

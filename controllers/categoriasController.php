@@ -6,13 +6,19 @@ class categoriasController extends Controller
 	public function __construct(){
 		$this->verificarSession();
 		Session::tiempo();
-        $this->verificarRolAdminSuper();
+        #$this->verificarRolAdminSuper();
 		parent::__construct();
         $this->tema = 'Categorías de productos';
+        $this->permisos = $this->getPermisos('Categorias');
 	}
 
 	public function index()
 	{
+        if ($this->permisos->leer != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
 		$this->verificarMensajes();
 
 		$this->_view->assign('titulo', 'Categorias');
@@ -25,6 +31,11 @@ class categoriasController extends Controller
 
     public function view($id = null)
     {
+        if ($this->permisos->leer != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarCategoria($id);
         $this->verificarMensajes();
 
@@ -38,6 +49,11 @@ class categoriasController extends Controller
 
     public function edit($id = null)
     {
+        if ($this->permisos->actualizar != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarCategoria($id);
 
         $this->_view->assign('titulo', 'Editar Categoria');
@@ -71,10 +87,11 @@ class categoriasController extends Controller
             $categoria = Categoria::select('id')
                 ->where('nombre', $this->getSql('nombre'))
                 ->where('descripcion', $this->getSql('descripcion'))
+                ->where('status', $this->getInt('status'))
                 ->first();
 
             if ($categoria) {
-                $this->_view->assign('_error','La categoría ingresada ya existe... modifique algunos de los datos para continuar');
+                $this->_view->assign('_error','La categoría ingresada ya existe... modifique alguno de los datos para continuar');
                 $this->_view->renderizar('edit');
                 exit;
             }
@@ -99,6 +116,11 @@ class categoriasController extends Controller
 
     public function newImagen($id = null)
     {
+        if ($this->permisos->escribir != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->verificarCategoria($id);
 
         $this->_view->assign('titulo', 'Imagen Categoria');
@@ -134,6 +156,11 @@ class categoriasController extends Controller
 
     public function add()
     {
+        if ($this->permisos->escribir != 1) {
+            Session::set('msg_error','Acceso prohibido');
+            $this->redireccionar();
+        }
+
         $this->_view->assign('titulo', 'Nueva Categoria');
         $this->_view->assign('title','Nueva Categoría');
         $this->_view->assign('button','Guardar');

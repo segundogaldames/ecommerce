@@ -11,12 +11,12 @@
 				<ul class="dropdown-menu settings-menu dropdown-menu-right">
 <li><a class="dropdown-item" href="page-user.html"><i class="fa fa-gear" aria-hidden="true"></i> Settings</a></li>
 					<li><a class="dropdown-item" href="{$_layoutParams.root}usuarios/perfil"><i class="fa fa-user fa-lg"></i> Perfil</a></li>
-					<li><a class="dropdown-item" href="{$_layoutParams.root}usuarios/logout"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
+					<li><a class="dropdown-item" href="{$_layoutParams.root}login/logout"><i class="fa fa-sign-out fa-lg"></i> Logout</a></li>
 				</ul>
 			</li>
 		{else}
 			<li>
-				<a class="app-nav__item" href="{$_layoutParams.root}usuarios/login" aria-label="Open Profile Menu"><i
+				<a class="app-nav__item" href="{$_layoutParams.root}login/login" aria-label="Open Profile Menu"><i
 				class="fa fa-user fa-lg"></i></a>
 			</li>
 		{/if}
