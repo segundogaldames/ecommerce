@@ -137,7 +137,7 @@ class Session
 
 		if(time() - Session::get('tiempo') > (SESSION_TIME * 60)):
 			Session::destroy();
-			header('Location: ' . BASE_URL . 'usuarios/logout');
+			header('Location: ' . BASE_URL . 'login/logout');
 		else:
 			Session::set('tiempo', time());
 		endif;

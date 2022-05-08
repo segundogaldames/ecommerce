@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.0.0-rc.0, created on 2022-05-01 19:30:38
+/* Smarty version 4.0.0-rc.0, created on 2022-05-07 20:15:45
   from '/var/www/html/ecommerce/views/layout/default/menu.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0-rc.0',
-  'unifunc' => 'content_626f181e90fd54_53146431',
+  'unifunc' => 'content_62770bb184a546_35929590',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'ba72d3a34ba307a7d14cd5608d37eac40ac42b4a' => 
     array (
       0 => '/var/www/html/ecommerce/views/layout/default/menu.tpl',
-      1 => 1651424665,
+      1 => 1651968942,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_626f181e90fd54_53146431 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62770bb184a546_35929590 (Smarty_Internal_Template $_smarty_tpl) {
 if (((Session::get('autenticado') !== null ))) {?>
 
 	<!-- Sidebar menu-->
@@ -66,6 +66,11 @@ roles" rel="noopener"><i
 clientes"><i class="app-menu__icon fa fa-user"
 							aria-hidden="true"></i><span class="app-menu__label">Clientes</span></a>
 				</li>
+				<li>
+					<a class="app-menu__item" href="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['root'];?>
+modulos"><i class="app-menu__icon fa fa-bars"
+							aria-hidden="true"></i><span class="app-menu__label">Módulos</span></a>
+				</li>
 			<?php }?>
 			<li>
 				<a class="app-menu__item" href="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['root'];?>
@@ -92,7 +97,7 @@ productos" rel="noopener">
 			</li>
 			<li>
 				<a class="app-menu__item" href="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['root'];?>
-usuarios/logout"><i
+login/logout"><i
 						class="app-menu__icon fa fa-user-times" aria-hidden="true"></i><span
 						class="app-menu__label">Logout</span></a>
 			</li>

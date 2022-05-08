@@ -76,8 +76,8 @@ class View extends Smarty
 		if(is_readable($rutaWiev)):
 			$this->assign('_contenido', $rutaWiev);
 		else:
-			throw new Exception("Error de vista");
-
+			#throw new Exception("Error de vista");
+			header('Location: ' . BASE_URL . 'error/error/');
 		endif;
 
 		$this->assign('_acl', $this->_acl);

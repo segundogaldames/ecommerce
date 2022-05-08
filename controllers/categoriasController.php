@@ -15,8 +15,7 @@ class categoriasController extends Controller
 	public function index()
 	{
         if ($this->permisos->leer != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
 		$this->verificarMensajes();
@@ -32,8 +31,7 @@ class categoriasController extends Controller
     public function view($id = null)
     {
         if ($this->permisos->leer != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarCategoria($id);
@@ -50,8 +48,7 @@ class categoriasController extends Controller
     public function edit($id = null)
     {
         if ($this->permisos->actualizar != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarCategoria($id);
@@ -117,8 +114,7 @@ class categoriasController extends Controller
     public function newImagen($id = null)
     {
         if ($this->permisos->escribir != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarCategoria($id);
@@ -157,8 +153,7 @@ class categoriasController extends Controller
     public function add()
     {
         if ($this->permisos->escribir != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
         $this->_view->assign('titulo', 'Nueva Categoria');

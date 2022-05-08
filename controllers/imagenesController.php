@@ -8,18 +8,23 @@ class imagenesController extends Controller
 	public function __construct(){
 		$this->verificarSession();
 		Session::tiempo();
-        $this->verificarRolAdmin();
+        #$this->verificarRolAdmin();
 		parent::__construct();
         $this->tema = 'Imágenes de productos';
+        $this->permiso = $this->getPermisos('Imagenes');
 	}
 
 	public function index()
 	{
-
+        $this->_view->renderizae('index');
 	}
 
     public function add($producto = null)
     {
+        if ($this->permiso->escribir != 1) {
+            $this->redireccionar();
+        }
+
         $this->verificarProducto($producto);
 
         $this->_view->assign('titulo', 'Nueva Imagen');

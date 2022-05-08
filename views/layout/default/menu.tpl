@@ -62,7 +62,7 @@
 				</ul>
 			</li>
 			<li>
-				<a class="app-menu__item" href="{$_layoutParams.root}usuarios/logout"><i
+				<a class="app-menu__item" href="{$_layoutParams.root}login/logout"><i
 						class="app-menu__icon fa fa-user-times" aria-hidden="true"></i><span
 						class="app-menu__label">Logout</span></a>
 			</li>

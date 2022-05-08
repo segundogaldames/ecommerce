@@ -50,7 +50,7 @@ abstract class Controller
 		$this->redireccionar();
 	}
 
-	protected function getPermisos($modelo){
+	protected function getPermisos($modelo = null){
 		//print_r($data);exit;
 		if ($modelo) {
 			$modulo = Modulo::select('id')->where('titulo', $modelo)->first();
@@ -67,7 +67,7 @@ abstract class Controller
 				return $permisos;
 			}
 		}
-		return false;
+		$this->redireccionar('error/error');
 	}
 
 	protected  function verificarMensajes(){

@@ -6,7 +6,7 @@ class Bootstrap
 	{
 		$modulo = $peticion->getModulo();
 		$controller = $peticion->getControlador() . 'Controller';
-		
+
 		$metodo = $peticion->getMetodo();
 		$args = $peticion->getArgs();
 
@@ -18,7 +18,7 @@ class Bootstrap
 				$rutaControlador = ROOT . 'modules' . DS . $modulo . DS . 'controllers' . DS . $controller . '.php';
 			else:
 				throw new Exception("Error de base de modulo");
-				
+
 			endif;
 		else:
 			$rutaControlador = ROOT . 'controllers' . DS . $controller . '.php';
@@ -43,8 +43,8 @@ class Bootstrap
 				call_user_func(array($controller, $metodo));
 			endif;
 		else:
-			throw new Exception("No encontrado");
-			
+			#throw new Exception("No encontrado");
+			header('Location: ' . BASE_URL . 'error/error/');
 		endif;
 	}
 }

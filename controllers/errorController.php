@@ -8,39 +8,20 @@ class errorController extends Controller
 
 	public function index()
 	{
-		$this->_view->assign('titulo', 'Error');
-		$this->_view->assign('mensaje', $this->_getError());
-		$this->_view->renderizar('index', 'error');
+
 	}
 
-	public function access($codigo)
+	public function error()
 	{
-		$this->_view->assign('titulo', 'Error');
-		$this->_view->assign('mensaje', $this->_getError($codigo));
-		$this->_view->renderizar('access', 'error');
+		$this->_view->assign('titulo', 'Página No Encontrada');
+		$this->_view->assign('mensaje', 'Sitio no encontrado');
+		$this->_view->renderizar('error');
 	}
 
-	private function _getError($codigo = false)
+	public function noPermit()
 	{
-		if($codigo):
-			$codigo = $this->filtrarInt($codigo);
-
-			if(is_int($codigo)):
-				$codigo = $codigo;
-			endif;
-		else:
-			$codigo = 'default';
-		endif;	
-
-		$error['default'] = 'Ha ocurrido un error y la pagina no puede mostrarse';
-		$error['5050'] = 'Acceso restringido';
-		$error['8080'] = 'Tiempo de la sesion esta agotado';
-
-		if(array_key_exists($codigo, $error)):
-			return $error[$codigo];
-		else:
-			return $error['default'];
-		endif;
+		$this->_view->assign('titulo', 'Inaccesible');
+		$this->_view->assign('mensaje', 'Acceso no permitido');
+		$this->_view->renderizar('noPermit');
 	}
-
 }
