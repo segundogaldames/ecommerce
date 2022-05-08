@@ -6,6 +6,7 @@ class modulosController extends Controller
 
 	public function __construct(){
 		$this->verificarSession();
+        $this->verificarRolAdmin();
 		Session::tiempo();
 		parent::__construct();
         $this->tema = 'Módulos del sistema';

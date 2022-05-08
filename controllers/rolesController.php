@@ -10,14 +10,13 @@ class rolesController extends Controller
         parent::__construct();
         //$this->verificarRolAdmin();
         $this->tema = 'Roles de usuarios';
-        $this->permisos = Helper::getPermisos('Roles');
+        $this->permiso = $this->getPermisos('Roles');
     }
 
     public function index()
     {
-        if ($this->permisos->leer != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+        if ($this->permiso->leer != 1) {
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarMensajes();
@@ -31,9 +30,8 @@ class rolesController extends Controller
 
     public function view($id = null)
     {
-        if ($this->permisos->leer != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+        if ($this->permiso->leer != 1) {
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarRol($id);
@@ -48,9 +46,8 @@ class rolesController extends Controller
 
     public function edit($id = null)
     {
-        if ($this->permisos->actualizar != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+        if ($this->permiso->actualizar != 1) {
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarRol($id);
@@ -112,9 +109,8 @@ class rolesController extends Controller
 
     public function add()
     {
-        if ($this->permisos->escribir != 1) {
-            Session::set('msg_error','Acceso prohibido');
-            $this->redireccionar();
+        if ($this->permiso->escribir != 1) {
+            $this->redireccionar('error/noPermit');
         }
 
         $this->_view->assign('titulo','Nuevo Rol');

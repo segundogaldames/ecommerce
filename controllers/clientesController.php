@@ -17,8 +17,7 @@ class clientesController extends Controller
 	{
 		#print_r($this->permisos);exit;
 		if ($this->permisos->leer != 1) {
-			Session::set('msg_error','Acceso prohibido');
-			$this->redireccionar();
+			$this->redireccionar('error/noPermit');
 		}
 		$this->verificarMensajes();
 

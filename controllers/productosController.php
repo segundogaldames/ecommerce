@@ -11,10 +11,15 @@ class productosController extends Controller
 		Session::tiempo();
 		parent::__construct();
         $this->tema = 'Productos de la tienda';
+        $this->permiso = $this->getPermisos('Productos');
 	}
 
 	public function index()
 	{
+        if ($this->permiso->leer!=1) {
+            $this->redireccionar('error/noPermit');
+        }
+
 		$this->verificarMensajes();
 
 		$this->_view->assign('titulo', 'Productos');
@@ -27,6 +32,10 @@ class productosController extends Controller
 
     public function view($id = null)
     {
+        if ($this->permiso->leer!=1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarProducto($id);
         $this->verificarMensajes();
 
@@ -41,6 +50,10 @@ class productosController extends Controller
 
     public function edit($id = null)
     {
+        if ($this->permiso->actualizar!=1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarProducto($id);
 
         $this->_view->assign('titulo', 'Editar Producto');
@@ -136,6 +149,10 @@ class productosController extends Controller
 
     public function add()
     {
+        if ($this->permiso->escribir!=1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->_view->assign('titulo', 'Nuevo Producto');
         $this->_view->assign('title','Nuevo Productos');
         $this->_view->assign('tema', $this->tema);

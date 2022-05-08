@@ -9,12 +9,17 @@ class usuariosController extends Controller
     {
         parent::__construct();
         $this->tema = 'Usuarios del sistema';
+        $this->permiso = $this->getPermisos('Usuarios');
     }
 
     public function index()
     {
         $this->verificarSession();
-        $this->verificarRolAdminSuper();
+
+        if ($this->permiso->leer != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarMensajes();
 
         $this->_view->assign('titulo', 'Usuarios');
@@ -27,7 +32,11 @@ class usuariosController extends Controller
     public function view($id = null)
     {
         $this->verificarSession();
-        $this->verificarRolAdminSuper();
+
+        if ($this->permiso->leer != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarUsuario($id);
         $this->verificarMensajes();
 
@@ -41,6 +50,11 @@ class usuariosController extends Controller
     public function perfil()
     {
         $this->verificarSession();
+
+        if ($this->permiso->leer != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarMensajes();
 
         $this->_view->assign('titulo', 'Mi Perfil');
@@ -55,7 +69,11 @@ class usuariosController extends Controller
     public function edit($id = null)
     {
         $this->verificarSession();
-        $this->verificarRolAdminSuper();
+
+        if ($this->permiso->actualizar != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->verificarUsuario($id);
 
         $this->_view->assign('titulo','Editar Usuario');
@@ -235,6 +253,10 @@ class usuariosController extends Controller
     {
         $this->verificarSession();
 
+        if ($this->permiso->actualizar != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->_view->assign('titulo','Cambiar Password');
         $this->_view->assign('title','Cambiar Password');
         $this->_view->assign('tema', $this->tema);
@@ -289,7 +311,10 @@ class usuariosController extends Controller
     public function add()
     {
         $this->verificarSession();
-        $this->verificarRolAdminSuper();
+
+        if ($this->permiso->escribir != 1) {
+            $this->redireccionar('error/noPermit');
+        }
 
         $this->_view->assign('titulo','Nuevo Usuario');
         $this->_view->assign('title','Nuevo Usuario');

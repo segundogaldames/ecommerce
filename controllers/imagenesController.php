@@ -16,13 +16,13 @@ class imagenesController extends Controller
 
 	public function index()
 	{
-        $this->_view->renderizae('index');
+        $this->_view->renderizar('index');
 	}
 
     public function add($producto = null)
     {
         if ($this->permiso->escribir != 1) {
-            $this->redireccionar();
+            $this->redireccionar('error/noPermit');
         }
 
         $this->verificarProducto($producto);
@@ -92,6 +92,9 @@ class imagenesController extends Controller
 
     public function delete()
     {
+        if ($this->permiso->eliminar!=1) {
+            $this->redireccionar('error/noPermit');
+        }
 
         if ($this->getAlphaNum('enviar') == CTRL) {
             if ($this->getInt('imagen')) {
