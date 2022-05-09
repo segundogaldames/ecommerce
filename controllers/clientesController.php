@@ -30,5 +30,8 @@ class clientesController extends Controller
 	}
 
 	########################################################
+	public function validate()
+	{
 
+	}
 }

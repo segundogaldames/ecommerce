@@ -34,8 +34,7 @@
 
    </head>
    <body>
-      {include file="header.tpl"}
-      {include file="menu.tpl"}
+
 
       <div class="content">
             <noscript><p>Debe tener el soporte de Javascript habilitado</p></noscript>

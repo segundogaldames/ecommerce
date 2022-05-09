@@ -1,3 +1,5 @@
+{include file="header.tpl"}
+{include file="menu.tpl"}
 <main class="app-content">
     <div class="app-title">
         <div>

@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<ul class="app-menu">
-			<li><a class="app-menu__item" href="{$_layoutParams.root}"><i class="app-menu__icon fa fa-dashboard"></i><span
+			<li><a class="app-menu__item" href="{$_layoutParams.root}admin"><i class="app-menu__icon fa fa-dashboard"></i><span
 						class="app-menu__label">Dashboard</span></a></li>
 
 			{if Helper::getRolAdminSuper()}
