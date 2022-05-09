@@ -61,29 +61,7 @@ class permisosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
 
 
-            if (!$this->getInt('leer')) {
-                $this->_view->assign('_error','Seleccione una opción de lectura');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('escribir')) {
-                $this->_view->assign('_error','Seleccione una opción de escritura');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('actualizar')) {
-                $this->_view->assign('_error','Seleccione una opción de actualización');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('eliminar')) {
-                $this->_view->assign('_error','Seleccione una opción de eliminación');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate();
 
             $permiso = Permiso::select('id')
                         ->where('leer', $this->getInt('leer'))
@@ -139,29 +117,7 @@ class permisosController extends Controller
                 exit;
             }
 
-            if (!$this->getInt('leer')) {
-                $this->_view->assign('_error','Seleccione una opción de lectura');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('escribir')) {
-                $this->_view->assign('_error','Seleccione una opción de escritura');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('actualizar')) {
-                $this->_view->assign('_error','Seleccione una opción de actualización');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('eliminar')) {
-                $this->_view->assign('_error','Seleccione una opción de eliminación');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
             $permiso = Permiso::select('id')
                                 ->where('modulo_id', $this->getInt('modulo'))
@@ -195,6 +151,33 @@ class permisosController extends Controller
     }
 
     #############################################################
+    public function validate()
+    {
+        if (!$this->getInt('leer')) {
+            $this->_view->assign('_error','Seleccione una opción de lectura');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('escribir')) {
+            $this->_view->assign('_error','Seleccione una opción de escritura');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('actualizar')) {
+            $this->_view->assign('_error','Seleccione una opción de actualización');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('eliminar')) {
+            $this->_view->assign('_error','Seleccione una opción de eliminación');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
+
     private function verificarPermiso($id)
     {
         if (!$this->filtrarInt($id)) {

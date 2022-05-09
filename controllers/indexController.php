@@ -17,4 +17,7 @@ class indexController extends Controller
 
 		$this->_view->renderizar('index');
 	}
+
+	###########################################
+	public function validate(){}
 }

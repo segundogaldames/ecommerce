@@ -66,47 +66,7 @@ class productosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$this->getAlphaNum ('codigo')) {
-                $this->_view->assign('_error','Ingrese el código del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('nombre')) {
-                $this->_view->assign('_error','Ingrese el nombre del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('descripcion')) {
-                $this->_view->assign('_error','Ingrese la descrición del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('precio')) {
-                $this->_view->assign('_error','Ingrese el precio del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('stock')) {
-                $this->_view->assign('_error','Ingrese el stock del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error','Seleccione el status del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('categoria')) {
-                $this->_view->assign('_error','Seleccione la categoría del producto');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate();
 
             $producto = Producto::select('id')
                     ->where('codigo', $this->getAlphaNum('codigo'))
@@ -163,47 +123,7 @@ class productosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('producto',$_POST);
 
-            if (!$this->getAlphaNum ('codigo')) {
-                $this->_view->assign('_error','Ingrese el código del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('nombre')) {
-                $this->_view->assign('_error','Ingrese el nombre del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('descripcion')) {
-                    $this->_view->assign('_error','Ingrese la descrición del producto');
-                    $this->_view->renderizar('add');
-                    exit;
-            }
-
-            if (!$this->getInt('precio')) {
-                $this->_view->assign('_error','Ingrese el precio del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('stock')) {
-                $this->_view->assign('_error','Ingrese el stock del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error','Seleccione el status del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('categoria')) {
-                $this->_view->assign('_error','Seleccione la categoría del producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
             $producto = Producto::select('id')->where('codigo', $this->getAlphaNum('codigo'))->first();
 
@@ -237,6 +157,50 @@ class productosController extends Controller
     }
 
     ####################################################################
+    public function validate()
+    {
+        if (!$this->getAlphaNum ('codigo')) {
+            $this->_view->assign('_error','Ingrese el código del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getAlphaNum('nombre')) {
+            $this->_view->assign('_error','Ingrese el nombre del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getAlphaNum('descripcion')) {
+            $this->_view->assign('_error','Ingrese la descrición del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('precio')) {
+            $this->_view->assign('_error','Ingrese el precio del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('stock')) {
+            $this->_view->assign('_error','Ingrese el stock del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('status')) {
+            $this->_view->assign('_error','Seleccione el status del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('categoria')) {
+            $this->_view->assign('_error','Seleccione la categoría del producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
     private function verificarProducto($id)
     {
         if (!$this->filtrarInt($id)) {

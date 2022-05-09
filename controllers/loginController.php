@@ -28,17 +28,7 @@ class loginController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
 
         //print_r($_POST);exit;
-            if (!$this->validarEmail($this->getPostParam('email'))) {
-                $this->_view->assign('_error','Ingrese su correo electrónico');
-                $this->_view->renderizar('login');
-                exit;
-            }
-
-            if (!$this->getSql('clave')) {
-                $this->_view->assign('_error','Ingrese su password');
-                $this->_view->renderizar('login');
-                exit;
-            }
+            $this->validate();
 
             $usuario = Usuario::with('rol')
                 ->where('email', $this->getPostParam('email'))
@@ -77,6 +67,20 @@ class loginController extends Controller
     }
 
     #############################################################
+    public function validate()
+    {
+        if (!$this->validarEmail($this->getPostParam('email'))) {
+            $this->_view->assign('_error','Ingrese su correo electrónico');
+            $this->_view->renderizar('login');
+            exit;
+        }
+
+        if (!$this->getSql('clave')) {
+            $this->_view->assign('_error','Ingrese su password');
+            $this->_view->renderizar('login');
+            exit;
+        }
+    }
     private function encriptar($clave)
     {
         $clave = Hash::getHash('sha1', $clave, HASH_KEY);

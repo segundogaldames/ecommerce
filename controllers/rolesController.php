@@ -61,25 +61,13 @@ class rolesController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$this->getSql('nombre')) {
-                $this->_view->assign('_error','Ingrese el nombre del rol');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate();
 
-            if (!$this->getSql('descripcion')) {
-                $this->_view->assign('_error','Ingrese la descripción del rol');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error','Seleccione el status del rol');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            $rol = Rol::select('id')->where('nombre', $this->getSql('nombre'))->where('descripcion', $this->getSql('descripcion'))->where('status', $this->getInt('status'))->first();
+            $rol = Rol::select('id')
+                        ->where('nombre', $this->getSql('nombre'))
+                        ->where('descripcion', $this->getSql('descripcion'))
+                        ->where('status', $this->getInt('status'))
+                        ->first();
 
             if ($rol) {
                 $this->_view->assign('_error','El rol ingresado ya existe... modifique algunos de los datos para continuar');
@@ -122,23 +110,7 @@ class rolesController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('rol', $_POST);
 
-            if (!$this->getSql('nombre')) {
-                $this->_view->assign('_error','Ingrese el nombre del rol');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getSql('descripcion')) {
-                $this->_view->assign('_error','Ingrese la descripción del rol');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error','Seleccione el status del rol');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
             $rol = Rol::select('id')->where('nombre', $this->getSql('nombre'))->first();
 
@@ -168,6 +140,26 @@ class rolesController extends Controller
     }
 
     #########################################
+    public function validate()
+    {
+        if (!$this->getSql('nombre')) {
+            $this->_view->assign('_error','Ingrese el nombre del rol');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getSql('descripcion')) {
+            $this->_view->assign('_error','Ingrese la descripción del rol');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('status')) {
+            $this->_view->assign('_error','Seleccione el status del rol');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
     /*
     * verifica id de rol
     * @param int id

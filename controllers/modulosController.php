@@ -50,23 +50,7 @@ class modulosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$this->getAlphaNum('titulo')) {
-                $this->_view->assign('_error', 'Ingrese el título del módulo');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('descripcion')) {
-                $this->_view->assign('_error', 'Ingrese el descripción del módulo');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error', 'Seleccione el status del módulo');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate();
 
             $modulo = Modulo::select('id')
                     ->where('titulo', $this->getAlphaNum('titulo'))
@@ -110,23 +94,7 @@ class modulosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$this->getAlphaNum('titulo')) {
-                $this->_view->assign('_error', 'Ingrese el título del módulo');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getAlphaNum('descripcion')) {
-                $this->_view->assign('_error', 'Ingrese el descripción del módulo');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('status')) {
-                $this->_view->assign('_error', 'Seleccione el status del módulo');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
             $modulo = Modulo::select('id')->where('titulo', $this->getAlphaNum('titulo'))->first();
 
@@ -156,6 +124,26 @@ class modulosController extends Controller
     }
 
     #####################################################################
+    public function validate()
+    {
+        if (!$this->getAlphaNum('titulo')) {
+            $this->_view->assign('_error', 'Ingrese el título del módulo');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getAlphaNum('descripcion')) {
+            $this->_view->assign('_error', 'Ingrese el descripción del módulo');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('status')) {
+            $this->_view->assign('_error', 'Seleccione el status del módulo');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
 
     private function verificarModulo($id)
     {

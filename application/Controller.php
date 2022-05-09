@@ -12,6 +12,7 @@ abstract class Controller
 	}
 	//obliga a las clases hijas a implementar un metodo index por defecto
 	abstract function index();
+	abstract function validate();
 
 	protected function loadModel($modelo)
 	{

@@ -36,23 +36,7 @@ class imagenesController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$_FILES['imagen']['name']) {
-                $this->_view->assign('_error','Seleccione una imagen para el producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if ($_FILES['imagen']['type'] != 'image/jpeg') {
-                $this->_view->assign('_error','Seleccione una imagen jpeg para el producto');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if ($_FILES['imagen']['size'] > 60000) {
-                $this->_view->assign('_error','La imagen excede el peso máximo de 30 kilobytes');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
             $img_prod = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
@@ -113,6 +97,26 @@ class imagenesController extends Controller
     }
 
     ######################################################
+    public function validate()
+    {
+        if (!$_FILES['imagen']['name']) {
+            $this->_view->assign('_error','Seleccione una imagen para el producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if ($_FILES['imagen']['type'] != 'image/jpeg') {
+            $this->_view->assign('_error','Seleccione una imagen jpeg para el producto');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if ($_FILES['imagen']['size'] > 60000) {
+            $this->_view->assign('_error','La imagen excede el peso máximo de 30 kilobytes');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
     private function verificarProducto($id)
     {
         if (!$this->filtrarInt($id)) {

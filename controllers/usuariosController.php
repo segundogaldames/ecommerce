@@ -64,8 +64,6 @@ class usuariosController extends Controller
         $this->_view->renderizar('perfil');
     }
 
-
-
     public function edit($id = null)
     {
         $this->verificarSession();
@@ -86,48 +84,15 @@ class usuariosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            if (!$this->getSql('rut')) {
-                $this->_view->assign('_error','Ingrese el RUT del usuario');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate();
 
-            if (!$this->getSql('name')) {
-                $this->_view->assign('_error','Ingrese el nombre del usuario');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getSql('lastname')) {
-                $this->_view->assign('_error','Ingrese el o los apellidos del usuario');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->validarEmail($this->getPostParam('email'))) {
-                $this->_view->assign('_error','Ingrese el email del usuario');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getSql('phone') && strlen($this->getSql('phone')) < 9) {
-                $this->_view->assign('_error','El teléfono debe contener al menos 9 dígitos');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            if (!$this->getInt('rol')) {
-                $this->_view->assign('_error','Seleccione el rol del usuario');
-                $this->_view->renderizar('edit');
-                exit;
-            }
             if (!$this->getInt('status')) {
                 $this->_view->assign('_error','Seleccione el status del usuario');
                 $this->_view->renderizar('edit');
                 exit;
             }
 
-                $usuario = Usuario::select('id')
+            $usuario = Usuario::select('id')
                     ->where('rut', $this->getSql('rut'))
                     ->where('name', $this->getSql('name'))
                     ->where('lastname', $this->getSql('lastname'))
@@ -270,7 +235,7 @@ class usuariosController extends Controller
                 exit;
             }
 
-            if (!$this->getSql('clavea') && strlen($this->getSql('clave')) < 8) {
+            if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) {
                 $this->_view->assign('_error','El password debe contener al menos 8 caracteres');
                 $this->_view->renderizar('editPassword');
                 exit;
@@ -326,44 +291,10 @@ class usuariosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('usuario', $_POST);
 
-            if (!$this->getSql('rut')) {
-                $this->_view->assign('_error','Ingrese el RUT del usuario');
-                $this->_view->renderizar('add');
-                exit;
-            }
+            $this->validate();
 
-            if (!$this->getSql('name')) {
-                $this->_view->assign('_error','Ingrese el nombre del usuario');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getSql('lastname')) {
-                $this->_view->assign('_error','Ingrese el o los apellidos del usuario');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->validarEmail($this->getPostParam('email'))) {
-                $this->_view->assign('_error','Ingrese el email del usuario');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getSql('phone') && strlen($this->getSql('phone')) < 9) {
-                $this->_view->assign('_error','El teléfono debe contener al menos 9 dígitos');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getInt('rol')) {
-                $this->_view->assign('_error','Seleccione el rol del usuario');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) {
-                $this->_view->assign('_error','El password debe contener al menos 8 caracteres');
+            if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) { $this->_view->assign('_error','El
+                password debe contener al menos 8 caracteres');
                 $this->_view->renderizar('add');
                 exit;
             }
@@ -408,6 +339,45 @@ class usuariosController extends Controller
     }
 
     #############################################
+    public function validate()
+    {
+        if (!$this->getSql('rut')) {
+            $this->_view->assign('_error','Ingrese el RUT del usuario');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getSql('name')) {
+            $this->_view->assign('_error','Ingrese el nombre del usuario');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getSql('lastname')) {
+            $this->_view->assign('_error','Ingrese el o los apellidos del usuario');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->validarEmail($this->getPostParam('email'))) {
+            $this->_view->assign('_error','Ingrese el email del usuario');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getSql('phone') && strlen($this->getSql('phone')) < 9) { $this->_view->assign('_error','El teléfono
+            debe contener al menos 9 dígitos');
+            $this->_view->renderizar('add');
+            exit;
+        }
+
+        if (!$this->getInt('rol')) {
+            $this->_view->assign('_error','Seleccione el rol del usuario');
+            $this->_view->renderizar('add');
+            exit;
+        }
+    }
+
     private function verificarUsuario($id)
     {
         if (!$this->filtrarInt($id)) {
