@@ -62,6 +62,7 @@ class View extends Smarty
 			'ruta_css' => BASE_URL . 'views/layout/' . DEFAULT_LAYOUT . '/css/',
 			'ruta_js' => BASE_URL . 'views/layout/' . DEFAULT_LAYOUT . '/js/',
 			'ruta_img' => BASE_URL . 'views/layout/' . DEFAULT_LAYOUT . '/img/',
+			'ruta_shop' => BASE_URL . 'views/layout/' . DEFAULT_LAYOUT . '/shop/',
 			'menu' => $menu,
 			'item' => $item,
 			'js' => $js,

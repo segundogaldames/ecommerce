@@ -33,7 +33,8 @@
                     <tr>
                         <th>Portada:</th>
                         <td>
-                            <img src="{$_layoutParams.root}public/img/categorias/{$categoria.portada}" alt="">
+                            <img src="{$_layoutParams.root}public/img/categorias/{$categoria.portada}" alt=""
+                                class="img-thumbnail">
                             <a href="{$_layoutParams.root}categorias/newImagen/{$categoria.id}" class="btn btn-outline-dark">Cambiar Imagen</a>
                         </td>
                     </tr>

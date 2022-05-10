@@ -24,4 +24,9 @@ class errorController extends Controller
 		$this->_view->assign('mensaje', 'Acceso no permitido');
 		$this->_view->renderizar('noPermit');
 	}
+	#################################################################
+	public function validate()
+	{
+
+	}
 }
