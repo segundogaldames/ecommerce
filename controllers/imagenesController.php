@@ -35,11 +35,8 @@ class imagenesController extends Controller
         $this->_view->assign('enviar', CTRL);
 
         if ($this->getAlphaNum('enviar') == CTRL) {
-            if (!$this->getInt('portada')) {
-                $this->_view->assign('_error','Seleccione una opción');
-                $this->_view->renderizar('editPortada');
-                exit;
-            }
+
+            $this->validate('editPortada');
 
             $id_producto = Imagen::select('id','producto_id')->find($this->filtrarInt($id));
             $portada = Imagen::select('id','portada')->where('portada', $this->getInt('portada'))->where('producto_id', $id_producto->producto_id)->first();
@@ -84,8 +81,7 @@ class imagenesController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $vista = 'add';
-            $this->validate($vista);
+            $this->validate('add');
 
             $img_prod = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
@@ -160,27 +156,39 @@ class imagenesController extends Controller
     ######################################################
     public function validate($vista)
     {
-        if (!$_FILES['imagen']['name']) {
-            $this->_view->assign('_error','Seleccione una imagen para el producto');
-            $this->_view->renderizar($vista);
-            exit;
+        if ($vista == 'editPortada') {
+            if (!$this->getInt('portada')) {
+                $this->_view->assign('_error','Seleccione una opción');
+                $this->_view->renderizar('editPortada');
+                exit;
+            }
         }
 
-        $extension = explode('.', $_FILES['imagen']['name']);
-        $extension = end($extension);
-        //print_r($extension);exit;
+        if ($vista == 'add') {
+            # code...
+            if (!$_FILES['imagen']['name']) {
+                $this->_view->assign('_error','Seleccione una imagen para el producto');
+                $this->_view->renderizar($vista);
+                exit;
+            }
 
-        if ($extension != 'jpeg' && $extension != 'jpg') {
-            $this->_view->assign('_error','Seleccione una imagen para el producto');
-            $this->_view->renderizar($vista);
-            exit;
+            $extension = explode('.', $_FILES['imagen']['name']);
+            $extension = end($extension);
+            //print_r($extension);exit;
+
+            if ($extension != 'jpeg' && $extension != 'jpg') {
+                $this->_view->assign('_error','Seleccione una imagen para el producto');
+                $this->_view->renderizar($vista);
+                exit;
+            }
+
+            if ($_FILES['imagen']['size'] > 6000000) {
+                $this->_view->assign('_error','La imagen excede el peso máximo de 30 kilobytes');
+                $this->_view->renderizar($vista);
+                exit;
+            }
         }
 
-        if ($_FILES['imagen']['size'] > 6000000) {
-            $this->_view->assign('_error','La imagen excede el peso máximo de 30 kilobytes');
-            $this->_view->renderizar($vista);
-            exit;
-        }
     }
     private function verificarProducto($id)
     {
