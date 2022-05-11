@@ -50,7 +50,7 @@ class modulosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $this->validate();
+            $this->validate('edit');
 
             $modulo = Modulo::select('id')
                     ->where('titulo', $this->getAlphaNum('titulo'))
@@ -94,7 +94,7 @@ class modulosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $this->validate();
+            $this->validate('add');
 
             $modulo = Modulo::select('id')->where('titulo', $this->getAlphaNum('titulo'))->first();
 
@@ -124,23 +124,23 @@ class modulosController extends Controller
     }
 
     #####################################################################
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getAlphaNum('titulo')) {
             $this->_view->assign('_error', 'Ingrese el título del módulo');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getAlphaNum('descripcion')) {
             $this->_view->assign('_error', 'Ingrese el descripción del módulo');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('status')) {
             $this->_view->assign('_error', 'Seleccione el status del módulo');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

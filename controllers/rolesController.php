@@ -61,7 +61,7 @@ class rolesController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $this->validate();
+            $this->validate('edit');
 
             $rol = Rol::select('id')
                         ->where('nombre', $this->getSql('nombre'))
@@ -110,7 +110,7 @@ class rolesController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('rol', $_POST);
 
-            $this->validate();
+            $this->validate('add');
 
             $rol = Rol::select('id')->where('nombre', $this->getSql('nombre'))->first();
 
@@ -140,23 +140,23 @@ class rolesController extends Controller
     }
 
     #########################################
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getSql('nombre')) {
             $this->_view->assign('_error','Ingrese el nombre del rol');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getSql('descripcion')) {
             $this->_view->assign('_error','Ingrese la descripción del rol');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('status')) {
             $this->_view->assign('_error','Seleccione el status del rol');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

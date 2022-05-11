@@ -61,7 +61,7 @@ class permisosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
 
 
-            $this->validate();
+            $this->validate('edit');
 
             $permiso = Permiso::select('id')
                         ->where('leer', $this->getInt('leer'))
@@ -117,7 +117,7 @@ class permisosController extends Controller
                 exit;
             }
 
-            $this->validate();
+            $this->validate('add');
 
             $permiso = Permiso::select('id')
                                 ->where('modulo_id', $this->getInt('modulo'))
@@ -151,29 +151,29 @@ class permisosController extends Controller
     }
 
     #############################################################
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getInt('leer')) {
             $this->_view->assign('_error','Seleccione una opción de lectura');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('escribir')) {
             $this->_view->assign('_error','Seleccione una opción de escritura');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('actualizar')) {
             $this->_view->assign('_error','Seleccione una opción de actualización');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('eliminar')) {
             $this->_view->assign('_error','Seleccione una opción de eliminación');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

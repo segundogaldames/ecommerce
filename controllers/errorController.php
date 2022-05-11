@@ -25,7 +25,7 @@ class errorController extends Controller
 		$this->_view->renderizar('noPermit');
 	}
 	#################################################################
-	public function validate()
+	public function validate($vista)
 	{
 
 	}

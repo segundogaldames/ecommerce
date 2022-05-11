@@ -1,5 +1,6 @@
 <?php
 use models\Categoria;
+use models\Producto;
 
 class categoriasController extends Controller
 {
@@ -63,7 +64,9 @@ class categoriasController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('categoria', $_POST);
 
-            $this->validate();
+            $vista = 'edit';
+
+            $this->validate($vista);
 
             $categoria = Categoria::select('id')
                 ->where('nombre', $this->getSql('nombre'))
@@ -149,7 +152,8 @@ class categoriasController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('categoria', $_POST);
 
-            $this->validate();
+            $vista = 'add';
+            $this->validate($vista);
 
             $imagen = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
@@ -200,23 +204,23 @@ class categoriasController extends Controller
         }
     }
 
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getSql('nombre')) {
             $this->_view->assign('_error','Ingrese el nombre de la categoría');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getSql('descripcion')) {
             $this->_view->assign('_error','Ingrese la descripción de la categoría');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('status')) {
             $this->_view->assign('_error','Seleccione el status de la categoría');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

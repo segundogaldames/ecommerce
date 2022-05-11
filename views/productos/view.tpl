@@ -81,6 +81,7 @@
                                 <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" class="card-img-top" alt="...">
                                 <div class="card-body text-center">
                                     {if Helper::getRolAdmin()}
+                                        <a href=""><i class="fa fa-pencil-square" aria-hidden="true" style="font-size: 40px;"></i></a>
                                         <form name="form" action="{$_layoutParams.root}imagenes/delete" method="post">
                                             <input type="hidden" name="enviar" value="{$enviar}">
                                             <input type="hidden" name="imagen" value="{$imagen.id}">

@@ -66,7 +66,7 @@ class productosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $this->validate();
+            $this->validate('edit');
 
             $producto = Producto::select('id')
                     ->where('codigo', $this->getAlphaNum('codigo'))
@@ -123,7 +123,7 @@ class productosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('producto',$_POST);
 
-            $this->validate();
+            $this->validate('add');
 
             $producto = Producto::select('id')->where('codigo', $this->getAlphaNum('codigo'))->first();
 
@@ -157,47 +157,47 @@ class productosController extends Controller
     }
 
     ####################################################################
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getAlphaNum ('codigo')) {
             $this->_view->assign('_error','Ingrese el código del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getAlphaNum('nombre')) {
             $this->_view->assign('_error','Ingrese el nombre del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getAlphaNum('descripcion')) {
             $this->_view->assign('_error','Ingrese la descrición del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('precio')) {
             $this->_view->assign('_error','Ingrese el precio del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('stock')) {
             $this->_view->assign('_error','Ingrese el stock del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('status')) {
             $this->_view->assign('_error','Seleccione el status del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('categoria')) {
             $this->_view->assign('_error','Seleccione la categoría del producto');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

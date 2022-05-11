@@ -84,7 +84,7 @@ class usuariosController extends Controller
 
         if ($this->getAlphaNum('enviar') == CTRL) {
 
-            $this->validate();
+            $this->validate('edit');
 
             if (!$this->getInt('status')) {
                 $this->_view->assign('_error','Seleccione el status del usuario');
@@ -291,7 +291,7 @@ class usuariosController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('usuario', $_POST);
 
-            $this->validate();
+            $this->validate('add');
 
             if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) { $this->_view->assign('_error','El
                 password debe contener al menos 8 caracteres');
@@ -339,41 +339,41 @@ class usuariosController extends Controller
     }
 
     #############################################
-    public function validate()
+    public function validate($vista)
     {
         if (!$this->getSql('rut')) {
             $this->_view->assign('_error','Ingrese el RUT del usuario');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getSql('name')) {
             $this->_view->assign('_error','Ingrese el nombre del usuario');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getSql('lastname')) {
             $this->_view->assign('_error','Ingrese el o los apellidos del usuario');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->validarEmail($this->getPostParam('email'))) {
             $this->_view->assign('_error','Ingrese el email del usuario');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getSql('phone') && strlen($this->getSql('phone')) < 9) { $this->_view->assign('_error','El teléfono
             debe contener al menos 9 dígitos');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
 
         if (!$this->getInt('rol')) {
             $this->_view->assign('_error','Seleccione el rol del usuario');
-            $this->_view->renderizar('add');
+            $this->_view->renderizar($vista);
             exit;
         }
     }

@@ -27,4 +27,7 @@ class pdfController extends Controller
 	{
 		require_once ROOT . 'public' . DS . 'files' . DS . 'pdf2.php';
 	}
+
+	###################################################################
+	public function validate($vista){}
 }
