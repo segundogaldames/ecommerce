@@ -64,21 +64,7 @@ class categoriasController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('categoria', $_POST);
 
-            $vista = 'edit';
-
-            $this->validate($vista);
-
-            $categoria = Categoria::select('id')
-                ->where('nombre', $this->getSql('nombre'))
-                ->where('descripcion', $this->getSql('descripcion'))
-                ->where('status', $this->getInt('status'))
-                ->first();
-
-            if ($categoria) {
-                $this->_view->assign('_error','La categoría ingresada ya existe... modifique alguno de los datos para continuar');
-                $this->_view->renderizar('edit');
-                exit;
-            }
+            $this->validate('edit');
 
             $categoria = Categoria::find($this->filtrarInt($id));
             $categoria->nombre = $this->getSql('nombre');
@@ -152,8 +138,7 @@ class categoriasController extends Controller
         if ($this->getAlphaNum('enviar') == CTRL) {
             $this->_view->assign('categoria', $_POST);
 
-            $vista = 'add';
-            $this->validate($vista);
+            $this->validate('add');
 
             $imagen = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
@@ -222,6 +207,21 @@ class categoriasController extends Controller
             $this->_view->assign('_error','Seleccione el status de la categoría');
             $this->_view->renderizar($vista);
             exit;
+        }
+
+        if ($vista == 'edit') {
+            $categoria = Categoria::select('id')
+                ->where('nombre', $this->getSql('nombre'))
+                ->where('descripcion', $this->getSql('descripcion'))
+                ->where('status', $this->getInt('status'))
+                ->first();
+
+            if ($categoria) {
+                $this->_view->assign('_error','La categoría ingresada ya existe... modifique alguno de los datos para
+                continuar');
+                $this->_view->renderizar('edit');
+                exit;
+            }
         }
     }
 }
