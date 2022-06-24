@@ -36,7 +36,9 @@ class tiendaController extends Controller
         $this->verificarProducto($id);
 
         $this->_view->assign('titulo', 'Producto');
-        $this->_view->assign('producto', Producto::with(['categoria','imagenes'])->find($this->filtrarInt($id)));
+        $producto = Producto::with(['categoria','imagenes'])->find($this->filtrarInt($id));
+        $this->_view->assign('producto', $producto);
+        $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $producto->categoria_id)->get());
 
         $this->_view->renderizar('producto');
     }
