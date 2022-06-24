@@ -45,7 +45,7 @@
                         </li>
 
                         <li>
-                            <a href="#">Tienda</a>
+                            <a href="{$_layoutParams.root}tienda">Tienda</a>
                         </li>
 
                         <li>

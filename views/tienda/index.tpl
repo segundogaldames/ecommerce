@@ -20,7 +20,7 @@
         <div class="container">
             <div class="flex-w flex-sb-m p-b-52">
                 <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                    <h3>{{$categoria.nombre}}</h3>
+                    Productos
                 </div>
 
                 <div class="flex-w flex-c-m m-tb-10">
@@ -230,46 +230,45 @@
 
             <div class="row isotope-grid">
 
-                {foreach from=$productos item=producto}
-                    {{foreach from=$producto->imagenes item=imagen}}
-                        {if $imagen.portada == 1}
+                {foreach from=$imagenes item=imagen}
 
-                            <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                                <!-- Block2 -->
-                                <div class="block2">
-                                    <div class="block2-pic hov-img0">
-                                        <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG-PRODUCT">
+                    <div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
+                        <!-- Block2 -->
+                        <div class="block2">
+                            <div class="block2-pic hov-img0">
+                                <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG-PRODUCT">
 
-                                            <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
-                                            class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-                                            Ver Detalle
-                                        </a>
-                                    </div>
+                                <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                    class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+                                    Ver Detalle
+                                </a>
+                            </div>
 
-                                    <div class="block2-txt flex-w flex-t p-t-14">
-                                        <div class="block2-txt-child1 flex-col-l ">
-                                            <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-                                                {{$imagen.producto.nombre}}
-                                            </a>
+                            <div class="block2-txt flex-w flex-t p-t-14">
+                                <div class="block2-txt-child1 flex-col-l ">
+                                    <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                        class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                        {{$imagen.producto.nombre}}
+                                    </a>
 
-                                            <span class="stext-105 cl3">
-                                                ${{$imagen.producto.precio|number_format:0:",":"."}}
-                                            </span>
-                                        </div>
+                                    <span class="stext-105 cl3">
+                                        ${{$imagen.producto.precio|number_format:0:",":"."}}
+                                    </span>
+                                </div>
 
-                                        <div class="block2-txt-child2 flex-r p-t-3">
-                                            <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-                                                <img class="icon-heart1 dis-block trans-04"
-                                                    src="{$_layoutParams.ruta_shop}images/icons/icon-heart-01.png" alt="ICON">
-                                                <img class="icon-heart2 dis-block trans-04 ab-t-l"
-                                                    src="{$_layoutParams.ruta_shop}images/icons/icon-heart-02.png" alt="ICON">
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="block2-txt-child2 flex-r p-t-3">
+                                    <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                        class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+                                        <img class="icon-heart1 dis-block trans-04"
+                                            src="{$_layoutParams.ruta_shop}images/icons/icon-heart-01.png" alt="ICON">
+                                        <img class="icon-heart2 dis-block trans-04 ab-t-l"
+                                            src="{$_layoutParams.ruta_shop}images/icons/icon-heart-02.png" alt="ICON">
+                                    </a>
                                 </div>
                             </div>
-                        {/if}
-                    {{/foreach}}
+                        </div>
+                    </div>
+
                 {/foreach}
             </div>
 
