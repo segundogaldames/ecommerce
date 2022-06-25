@@ -57,37 +57,12 @@ class rolesController extends Controller
         $this->_view->assign('button','Editar');
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->getAlphaNum('enviar') == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
 
             $this->validate('edit');
-
-            $rol = Rol::select('id')
-                        ->where('nombre', $this->getSql('nombre'))
-                        ->where('descripcion', $this->getSql('descripcion'))
-                        ->where('status', $this->getInt('status'))
-                        ->first();
-
-            if ($rol) {
-                $this->_view->assign('_error','El rol ingresado ya existe... modifique algunos de los datos para continuar');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            $rol = Rol::find($this->filtrarInt($id));
-            $rol->nombre = $this->getSql('nombre');
-            $rol->descripcion = $this->getSql('descripcion');
-            $rol->status = $this->getInt('status');
-            $res = $rol->save();
-
-            if ($res) {
-                # code...
-                Session::set('msg_success','El rol se ha modificado correctamente');
-            }else{
-                Session::set('msg_error','El rol no se ha modificado... intente nuevamente');
-            }
-
+            $this->setting('edit', $id);
 
             $this->redireccionar('roles/view/' . $this->filtrarInt($id));
         }
@@ -105,33 +80,13 @@ class rolesController extends Controller
         $this->_view->assign('title','Nuevo Rol');
         $this->_view->assign('button','Guardar');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->getAlphaNum('enviar') == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
             $this->_view->assign('rol', $_POST);
 
             $this->validate('add');
-
-            $rol = Rol::select('id')->where('nombre', $this->getSql('nombre'))->first();
-
-            if ($rol) {
-                $this->_view->assign('_error','El rol ingresado ya existe... intente con otro');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            $rol = new Rol;
-            $rol->nombre = $this->getSql('nombre');
-            $rol->descripcion = $this->getSql('descripcion');
-            $rol->status = $this->getInt('status');
-            $res = $rol->save();
-
-            if ($res) {
-                # code...
-                Session::set('msg_success','El rol se ha registrado correctamente');
-            }else{
-                Session::set('msg_error','El rol no se ha registrado... intente nuevamente');
-            }
+            $this->setting('add');
 
             $this->redireccionar('roles');
         }
@@ -143,27 +98,61 @@ class rolesController extends Controller
     public function validate($vista)
     {
         if (!$this->getSql('nombre')) {
-            $this->_view->assign('_error','Ingrese el nombre del rol');
+           $error = 'Ingrese el nombre del rol';
+        }elseif (!$this->getSql('descripcion')) {
+            $error = 'Ingrese la descripción del rol';
+        }elseif (!$this->getInt('status')) {
+            $error = 'Seleccione el status del rol';
+        }
+
+        if (isset($error)) {
+            $this->_view->assign('_error', $error);
             $this->_view->renderizar($vista);
             exit;
         }
 
-        if (!$this->getSql('descripcion')) {
-            $this->_view->assign('_error','Ingrese la descripción del rol');
-            $this->_view->renderizar($vista);
-            exit;
+        if ($vista == 'edit') {
+            $rol = Rol::select('id')
+                ->where('nombre', $this->getSql('nombre'))
+                ->where('descripcion', $this->getSql('descripcion'))
+                ->where('status', $this->getInt('status'))
+                ->first();
+        }else{
+            $rol = Rol::select('id')->where('nombre', $this->getSql('nombre'))->first();
         }
 
-        if (!$this->getInt('status')) {
-            $this->_view->assign('_error','Seleccione el status del rol');
+        if ($rol) {
+            if ($vista == 'edit') {
+                $error = 'El rol ingresado ya existe... modifique alguno de los datos para continuar';
+            }else {
+                $error = 'El rol ingresado ya existe... intente nuevamente';
+            }
+
+            $this->_view->assign('_error', $error);
             $this->_view->renderizar($vista);
             exit;
         }
     }
 
-    public function setting($view, $data)
+    public function setting($view, $data = null)
     {
+        if ($view == 'edit') {
+            $rol = Rol::find($this->filtrarInt($data));
+        }else {
+            $rol = new Rol;
+        }
 
+        $rol->nombre = $this->getSql('nombre');
+        $rol->descripcion = $this->getSql('descripcion');
+        $rol->status = $this->getInt('status');
+        $res = $rol->save();
+
+        if ($res) {
+        # code...
+            Session::set('msg_success','El rol se ha ingresado correctamente');
+        }else{
+            Session::set('msg_error','El rol no se ha ingresado... intente nuevamente');
+        }
     }
     /*
     * verifica id de rol
