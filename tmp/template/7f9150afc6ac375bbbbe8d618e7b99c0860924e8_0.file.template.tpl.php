@@ -1,28 +1,26 @@
 <?php
-/* Smarty version 4.0.0-rc.0, created on 2022-05-01 19:30:38
+/* Smarty version 4.0.0-rc.0, created on 2022-06-24 14:18:47
   from '/var/www/html/ecommerce/views/layout/default/template.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.0.0-rc.0',
-  'unifunc' => 'content_626f181e8e3044_53957351',
+  'unifunc' => 'content_62b600074d31b7_49302455',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '7f9150afc6ac375bbbbe8d618e7b99c0860924e8' => 
     array (
       0 => '/var/www/html/ecommerce/views/layout/default/template.tpl',
-      1 => 1651257378,
+      1 => 1656094719,
       2 => 'file',
     ),
   ),
   'includes' => 
   array (
-    'file:header.tpl' => 1,
-    'file:menu.tpl' => 1,
   ),
 ),false)) {
-function content_626f181e8e3044_53957351 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62b600074d31b7_49302455 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <html>
    <head>
@@ -53,38 +51,15 @@ style.css">
  src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"><?php echo '</script'; ?>
 >
     <![endif]-->
-    <?php echo '<script'; ?>
- src="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['ruta_js'];?>
-jquery-3.3.1.min.js"><?php echo '</script'; ?>
->
+
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <?php echo '<script'; ?>
- src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"><?php echo '</script'; ?>
->
 
-      <?php if ((isset($_smarty_tpl->tpl_vars['_layoutParams']->value['js'])) && count($_smarty_tpl->tpl_vars['_layoutParams']->value['js'])) {?>
-        <?php
-$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['_layoutParams']->value['js'], 'js');
-$_smarty_tpl->tpl_vars['js']->do_else = true;
-if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['js']->value) {
-$_smarty_tpl->tpl_vars['js']->do_else = false;
-?>
-          <?php echo '<script'; ?>
- type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['js']->value;?>
-"><?php echo '</script'; ?>
->
-        <?php
-}
-$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
-      <?php }?>
+
 
    </head>
    <body>
-      <?php $_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
-?>
-      <?php $_smarty_tpl->_subTemplateRender("file:menu.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
-?>
+
 
       <div class="content">
             <noscript><p>Debe tener el soporte de Javascript habilitado</p></noscript>
@@ -95,6 +70,13 @@ $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
 <!-- Essential javascripts for application to work-->
 
+    <?php echo '<script'; ?>
+ src="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['ruta_js'];?>
+jquery-3.3.1.min.js"><?php echo '</script'; ?>
+>
+    <?php echo '<script'; ?>
+ src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"><?php echo '</script'; ?>
+>
     <?php echo '<script'; ?>
  src="<?php echo $_smarty_tpl->tpl_vars['_layoutParams']->value['ruta_js'];?>
 popper.min.js"><?php echo '</script'; ?>
@@ -140,7 +122,22 @@ funciones.js"><?php echo '</script'; ?>
  type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"><?php echo '</script'; ?>
 >
 
+    <?php if ((isset($_smarty_tpl->tpl_vars['_layoutParams']->value['js'])) && count($_smarty_tpl->tpl_vars['_layoutParams']->value['js'])) {?>
+      <?php
+$_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->tpl_vars['_layoutParams']->value['js'], 'js');
+$_smarty_tpl->tpl_vars['js']->do_else = true;
+if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['js']->value) {
+$_smarty_tpl->tpl_vars['js']->do_else = false;
+?>
+        <?php echo '<script'; ?>
+ type="text/javascript" src="<?php echo $_smarty_tpl->tpl_vars['js']->value;?>
+"><?php echo '</script'; ?>
+>
+      <?php
+}
+$_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>
 
+    <?php }?>
   </body>
 </html><?php }
 }
