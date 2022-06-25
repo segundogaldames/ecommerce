@@ -75,7 +75,7 @@
         <select name="eliminar" class="form-control">
             {if $button == 'Editar'}
                 <option value="{$permiso.eliminar}">
-                    {if $permiso.leer == 1}
+                    {if $permiso.eliminar == 1}
                         Si
                     <option value="2">Desactivar</option>
                 {else}
