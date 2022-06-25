@@ -34,4 +34,9 @@ class clientesController extends Controller
 	{
 
 	}
+
+	public function setting($view, $data = null)
+	{
+
+	}
 }
