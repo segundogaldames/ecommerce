@@ -120,7 +120,7 @@ class Helper
     {
         $pass = "";
         $longitudPass=$length;
-        $cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$.*";
+        $cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$/.*";
         $longitudCadena=strlen($cadena);
 
         for($i=1; $i<=$longitudPass; $i++) {

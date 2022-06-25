@@ -378,6 +378,11 @@ class usuariosController extends Controller
         }
     }
 
+    public function setting($view, $data)
+    {
+
+    }
+
     private function verificarUsuario($id)
     {
         if (!$this->filtrarInt($id)) {
