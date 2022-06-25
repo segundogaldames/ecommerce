@@ -23,7 +23,7 @@
                 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
             </a>
 
-            <a href="{$_layoutParams.root}tienda/categoria/{$producto.categoria_id}" class="stext-109 cl8 hov-cl1 trans-04">
+            <a href="{$_layoutParams.root}tienda/categoria/{$producto.categoria.ruta}" class="stext-109 cl8 hov-cl1 trans-04">
                 {{$producto.categoria.nombre}}
                 <i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
             </a>
@@ -182,7 +182,7 @@
                                         <div class="block2-pic hov-img0">
                                             <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG-PRODUCT">
 
-                                            <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                            <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.ruta}"
                                                 class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                                 Ver Detalle
                                             </a>
@@ -190,7 +190,7 @@
 
                                         <div class="block2-txt flex-w flex-t p-t-14">
                                             <div class="block2-txt-child1 flex-col-l ">
-                                                <a href="{$_layoutParams.root}tienda/producto/{$producto.id}"
+                                                <a href="{$_layoutParams.root}tienda/producto/{$producto.ruta}"
                                                     class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                                     {{$imagen.producto.nombre}}
                                                 </a>

@@ -81,6 +81,11 @@ class loginController extends Controller
             exit;
         }
     }
+
+    public function setting($view, $data = null)
+    {
+
+    }
     private function encriptar($clave)
     {
         $clave = Hash::getHash('sha1', $clave, HASH_KEY);

@@ -18,25 +18,25 @@ class tiendaController extends Controller
         $this->_view->renderizar('index');
     }
 
-    public function categoria($id = null)
+    public function categoria($ruta = null)
     {
-        $this->verificarCategoria($id);
+        $categoria = Categoria::where('ruta', $ruta)->first();
+        $this->verificarCategoria($categoria->id);
 
-        $categoria = Categoria::find($this->filtrarInt($id));
 
         $this->_view->assign('titulo', 'Productos ' . $categoria->nombre);
         $this->_view->assign('categoria', $categoria);
-        $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $this->filtrarInt($id))->get());
+        $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $categoria->id)->get());
 
         $this->_view->renderizar('categoria');
     }
 
-    public function producto($id = null)
+    public function producto($ruta = null)
     {
-        $this->verificarProducto($id);
+        $producto = Producto::with(['categoria','imagenes'])->where('ruta', $ruta)->first();
+        $this->verificarProducto($producto->id);
 
         $this->_view->assign('titulo', 'Producto');
-        $producto = Producto::with(['categoria','imagenes'])->find($this->filtrarInt($id));
         $this->_view->assign('producto', $producto);
         $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $producto->categoria_id)->get());
 
@@ -51,27 +51,32 @@ class tiendaController extends Controller
 
     private function verificarCategoria($id)
     {
-        if (!$this->filtrarInt($id)) {
-            $this->redireccionar();
+        if ($this->filtrarInt($id)) {
+            $categoria = Categoria::select('id')->find($this->filtrarInt($id));
+
+            if ($categoria) {
+                return true;
+            }
         }
 
-        $categoria = Categoria::select('id')->find($this->filtrarInt($id));
-
-        if (!$categoria) {
-            $this->redireccionar();
-        }
+        $this->redireccionar();
     }
 
     private function verificarProducto($id)
     {
-        if (!$this->filtrarInt($id)) {
-            $this->redireccionar();
+        if ($this->filtrarInt($id)) {
+            $producto = Producto::select('id')->find($this->filtrarInt($id));
+
+            if ($producto) {
+                return true;
+            }
         }
 
-        $producto = Producto::select('id')->find($this->filtrarInt($id));
+        $this->redireccionar();
+    }
 
-        if (!$producto) {
-            $this->redireccionar();
-        }
+    public function setting($view, $data = null)
+    {
+
     }
 }

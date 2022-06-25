@@ -68,26 +68,30 @@ class productosController extends Controller
 
             $this->validate('edit');
 
+
             $producto = Producto::select('id')
-                    ->where('codigo', $this->getAlphaNum('codigo'))
-                    ->where('nombre', $this->getAlphaNum('nombre'))
-                    ->where('descripcion', $this->getAlphaNum('descripcion'))
-                    ->where('precio', $this->getInt('precio'))
-                    ->where('stock', $this->getInt('stock'))
-                    ->where('status', $this->getInt('status'))
-                    ->where('categoria_id', $this->getInt('categoria'))
-                    ->first();
+                        ->where('codigo', $this->getAlphaNum('codigo'))
+                        ->where('nombre', $this->getAlphaNum('nombre'))
+                        ->where('descripcion', $this->getAlphaNum('descripcion'))
+                        ->where('precio', $this->getInt('precio'))
+                        ->where('stock', $this->getInt('stock'))
+                        ->where('status', $this->getInt('status'))
+                        ->where('categoria_id', $this->getInt('categoria'))
+                        ->first();
 
             if ($producto) {
-            $this->_view->assign('_error','El producto ingresado ya existe... Modifique algunos de los datos para continuar');
-            $this->_view->renderizar('edit');
-            exit;
+                $this->_view->assign('_error','El producto ingresado ya existe... Modifique algunos de los datos para continuar');
+                $this->_view->renderizar('edit');
+                exit;
             }
 
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-',$ruta);
 
             $producto = Producto::find($this->filtrarInt($id));
             $producto->codigo = $this->getAlphaNum('codigo');
             $producto->nombre = $this->getAlphaNum('nombre');
+            $producto->ruta = $ruta;
             $producto->descripcion = $this->getAlphaNum('descripcion');
             $producto->precio = $this->getInt('precio');
             $producto->stock = $this->getInt('stock');
@@ -133,10 +137,13 @@ class productosController extends Controller
                 exit;
             }
 
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-',$ruta);
 
             $producto = new Producto;
             $producto->codigo = $this->getAlphaNum('codigo');
             $producto->nombre = $this->getAlphaNum('nombre');
+            $producto->ruta = $ruta;
             $producto->descripcion = $this->getAlphaNum('descripcion');
             $producto->precio = $this->getInt('precio');
             $producto->stock = $this->getInt('stock');

@@ -55,6 +55,11 @@
                         <li>
                             <a href="#">Contacto</a>
                         </li>
+                        {if isset(Session::get('autenticado')) && Helper::getRolAdmin()}
+                            <li>
+                                <a href="{$_layoutParams.root}admin">Admin</a>
+                            </li>
+                        {/if}
                     </ul>
                 </div>
 

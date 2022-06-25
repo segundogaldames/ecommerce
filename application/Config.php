@@ -13,3 +13,5 @@ define('DB_USER', 'root');
 define('DB_PASS', '1234');
 define('DB_NAME', 'tienda');
 define('DB_CHAR', 'utf8');
+define('METHODENCRIPT','AES-256-ECB');
+define('KEY','APP_ECOMMERCE');

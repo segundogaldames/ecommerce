@@ -20,4 +20,9 @@ class adminController extends Controller
 
 	###########################################
 	public function validate($vista){}
+
+	public function setting($view, $data = null)
+	{
+
+	}
 }

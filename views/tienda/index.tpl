@@ -238,7 +238,7 @@
                             <div class="block2-pic hov-img0">
                                 <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG-PRODUCT">
 
-                                <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.ruta}"
                                     class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04">
                                     Ver Detalle
                                 </a>
@@ -246,7 +246,7 @@
 
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.id}"
+                                    <a href="{$_layoutParams.root}tienda/producto/{$imagen.producto.ruta}"
                                         class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         {{$imagen.producto.nombre}}
                                     </a>
@@ -274,8 +274,8 @@
 
             <!-- Load more -->
             <div class="flex-c-m flex-w w-full p-t-45">
-                <a href="#" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
-                    Load More
+                <a href="{$_layoutParams.root}" class="flex-c-m stext-101 cl5 size-103 bg2 bor1 hov-btn1 p-lr-15 trans-04">
+                    Ver Más
                 </a>
             </div>
         </div>

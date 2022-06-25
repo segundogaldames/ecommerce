@@ -21,16 +21,11 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="{$_layoutParams.ruta_js}jquery-3.3.1.min.js"></script>
+
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-      {if isset($_layoutParams.js) && count($_layoutParams.js)}
-        {foreach item=js from=$_layoutParams.js}
-          <script type="text/javascript" src="{$js}"></script>
-        {/foreach}
 
-      {/if}
+
 
    </head>
    <body>
@@ -44,6 +39,8 @@
 
 <!-- Essential javascripts for application to work-->
 
+    <script src="{$_layoutParams.ruta_js}jquery-3.3.1.min.js"></script>
+    <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="{$_layoutParams.ruta_js}popper.min.js"></script>
     <script src="{$_layoutParams.ruta_js}bootstrap.min.js"></script>
     <script src="{$_layoutParams.ruta_js}main.js"></script>
@@ -61,6 +58,11 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
     <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
 
+    {if isset($_layoutParams.js) && count($_layoutParams.js)}
+      {foreach item=js from=$_layoutParams.js}
+        <script type="text/javascript" src="{$js}"></script>
+      {/foreach}
 
+    {/if}
   </body>
 </html>
