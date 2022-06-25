@@ -29,4 +29,9 @@ class errorController extends Controller
 	{
 
 	}
+
+	public function setting($view, $data)
+	{
+
+	}
 }
