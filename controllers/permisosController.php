@@ -178,6 +178,11 @@ class permisosController extends Controller
         }
     }
 
+    public function setting($view, $data)
+    {
+
+    }
+
     private function verificarPermiso($id)
     {
         if (!$this->filtrarInt($id)) {

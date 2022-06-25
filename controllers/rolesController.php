@@ -160,6 +160,11 @@ class rolesController extends Controller
             exit;
         }
     }
+
+    public function setting($view, $data)
+    {
+
+    }
     /*
     * verifica id de rol
     * @param int id

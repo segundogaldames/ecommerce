@@ -46,35 +46,12 @@ class modulosController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('button', 'Editar');
         $this->_view->assign('modulo', Modulo::find($this->filtrarInt($id)));
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt(CTRL));
 
-        if ($this->getAlphaNum('enviar') == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
 
             $this->validate('edit');
-
-            $modulo = Modulo::select('id')
-                    ->where('titulo', $this->getAlphaNum('titulo'))
-                    ->where('descripcion', $this->getAlphaNum('descripcion'))
-                    ->where('status', $this->getInt('status'))
-                    ->first();
-
-            if ($modulo) {
-                $this->_view->assign('_error', 'El módulo ingresado ya existe... modifique alguno de los datos para continuar');
-                $this->_view->renderizar('edit');
-                exit;
-            }
-
-            $modulo = Modulo::find($this->filtrarInt($id));
-            $modulo->titulo = $this->getAlphaNum('titulo');
-            $modulo->descripcion = $this->getAlphaNum('descripcion');
-            $modulo->status = $this->getInt('status');
-            $res = $modulo->save();
-
-            if ($res) {
-                Session::set('msg_success', 'El módulo se ha modificado correctamente');
-            }else {
-                Session::set('msg_error', 'El módulo no se ha modificado... Intente nuevamente');
-            }
+            $this->setting('edit', $id);
 
             $this->redireccionar('modulos/view/' . $this->filtrarInt($id));
 
@@ -85,37 +62,16 @@ class modulosController extends Controller
 
     public function add()
     {
-
         $this->_view->assign('titulo', 'Nuevo Modulo');
         $this->_view->assign('title', 'Nuevo módulo');
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('button', 'Guardar');
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt(CTRL));
 
-        if ($this->getAlphaNum('enviar') == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
 
             $this->validate('add');
-
-            $modulo = Modulo::select('id')->where('titulo', $this->getAlphaNum('titulo'))->first();
-
-            if ($modulo) {
-                $this->_view->assign('_error', 'El módulo ingresado ya existe... intente nuevamente');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            $modulo = new Modulo;
-            $modulo->titulo = $this->getAlphaNum('titulo');
-            $modulo->descripcion = $this->getAlphaNum('descripcion');
-            $modulo->status = $this->getInt('status');
-            $res = $modulo->save();
-
-            if ($res) {
-                Session::set('msg_success', 'El módulo se ha registrado correctamente');
-            }else {
-                Session::set('msg_error', 'El módulo no se ha registrado... Intente nuevamente');
-            }
-
+            $this->setting('add');
             $this->redireccionar('modulos');
 
         }
@@ -127,34 +83,72 @@ class modulosController extends Controller
     public function validate($vista)
     {
         if (!$this->getAlphaNum('titulo')) {
-            $this->_view->assign('_error', 'Ingrese el título del módulo');
+            $error = 'Ingrese el título del módulo';
+        }elseif (!$this->getAlphaNum('descripcion')) {
+            $error = 'Ingrese la descripción del módulo';
+        }elseif (!$this->getInt('status')) {
+            $error = 'Seleccione el status del módulo';
+        }
+
+        if (isset($error)) {
+            $this->_view->assign('_error', $error);
             $this->_view->renderizar($vista);
             exit;
         }
 
-        if (!$this->getAlphaNum('descripcion')) {
-            $this->_view->assign('_error', 'Ingrese el descripción del módulo');
-            $this->_view->renderizar($vista);
-            exit;
+        if ($vista == 'edit') {
+            $modulo = Modulo::select('id')
+                ->where('titulo', $this->getAlphaNum('titulo'))
+                ->where('descripcion', $this->getAlphaNum('descripcion'))
+                ->where('status', $this->getInt('status'))
+                ->first();
+        }else{
+            $modulo = Modulo::select('id')->where('titulo', $this->getAlphaNum('titulo'))->first();
         }
 
-        if (!$this->getInt('status')) {
-            $this->_view->assign('_error', 'Seleccione el status del módulo');
+        if ($modulo) {
+            if ($vista == 'edit') {
+                $error = 'El módulo ingresado ya existe... modifique alguno de los datos para continuar';
+            }else {
+                $error = 'El módulo ingresado ya existe... intente nuevamente';
+            }
+
+            $this->_view->assign('_error', $error);
             $this->_view->renderizar($vista);
             exit;
         }
     }
 
+    public function setting($view, $data = null)
+    {
+        if ($view == 'edit') {
+            $modulo = Modulo::find($this->filtrarInt($data));
+        }else{
+            $modulo = new Modulo;
+        }
+
+        $modulo->titulo = $this->getAlphaNum('titulo');
+        $modulo->descripcion = $this->getAlphaNum('descripcion');
+        $modulo->status = $this->getInt('status');
+        $res = $modulo->save();
+
+        if ($res) {
+            Session::set('msg_success', 'El módulo se ha ingresado correctamente');
+        }else {
+            Session::set('msg_error', 'El módulo no se ha ingresado... Intente nuevamente');
+        }
+    }
+
     private function verificarModulo($id)
     {
-        if (!$this->filtrarInt($id)) {
-            $this->redireccionar('modulos');
+        if ($this->filtrarInt($id)) {
+            $modulo = Modulo::select('id')->find($this->filtrarInt($id));
+
+            if ($modulo) {
+                return true;
+            }
         }
 
-        $modulo = Modulo::select('id')->find($this->filtrarInt($id));
-
-        if (!$modulo) {
-            $this->redireccionar('modulos');
-        }
+        $this->redireccionar('modulos');
     }
 }
