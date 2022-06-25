@@ -208,6 +208,12 @@ class productosController extends Controller
             exit;
         }
     }
+
+    public function setting($view, $data)
+    {
+
+    }
+
     private function verificarProducto($id)
     {
         if (!$this->filtrarInt($id)) {
