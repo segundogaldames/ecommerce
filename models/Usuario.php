@@ -12,4 +12,9 @@ class Usuario extends Model
     {
         return $this->belongsTo(Rol::class);
     }
+
+    public function carritos()
+    {
+        return $this->hasMany(Carrito::class);
+    }
 }

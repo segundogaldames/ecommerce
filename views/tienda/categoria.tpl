@@ -229,6 +229,7 @@
             </div>
 
             <div class="row isotope-grid">
+                {include file="../partials/_mensajes.tpl"}
                 {if isset($productos) && count($productos)}
 
                     {foreach from=$productos item=producto}

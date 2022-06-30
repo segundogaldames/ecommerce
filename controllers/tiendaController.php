@@ -12,6 +12,8 @@ class tiendaController extends Controller
 
     public function index()
     {
+        $this->verificarMensajes();
+
         $this->_view->assign('titulo', 'Productos');
         $this->_view->assign('imagenes', Imagen::with('producto')->where('portada', 1)->get());
 
@@ -33,12 +35,21 @@ class tiendaController extends Controller
 
     public function producto($ruta = null)
     {
+        $this->verificarMensajes();
+
+        if (Session::get('autenticado')) {
+            $enviar = Session::get('usuario_id');
+        }else {
+            $enviar = CTRL;
+        }
+
         $producto = Producto::with(['categoria','imagenes'])->where('ruta', $ruta)->first();
         $this->verificarProducto($producto->id);
 
         $this->_view->assign('titulo', 'Producto');
         $this->_view->assign('producto', $producto);
         $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $producto->categoria_id)->get());
+        $this->_view->assign('enviar', $this->encrypt($enviar));
 
         $this->_view->renderizar('producto');
     }

@@ -1,5 +1,6 @@
 <?php
 use models\Usuario;
+use models\Carrito;
 
 class loginController extends Controller
 {
@@ -61,9 +62,16 @@ class loginController extends Controller
         // $acceso = Usuario::find(Session::get('ingreso'));
         // $acceso->save();
 
+        $carrito = Carrito::where('usuario_id', Session::get('usuario_id'))->where('status',1)->get();
+
+        foreach ($carrito as $carr) {
+            $carr->delete();
+        }
+
         Session::destroy();
 
-        $this->redireccionar('login/login');
+
+        $this->redireccionar();
     }
 
     #############################################################

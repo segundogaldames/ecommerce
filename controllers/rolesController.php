@@ -162,14 +162,15 @@ class rolesController extends Controller
 
     private function verificarRol($id)
     {
-        if (!$this->filtrarInt($id)) {
-            $this->redireccionar('roles');
+        if ($this->filtrarInt($id)) {
+            $rol = Rol::select('id')->find($this->filtrarInt($id));
+
+            if ($rol) {
+                return true;
+            }
+
         }
 
-        $rol = Rol::select('id')->find($this->filtrarInt($id));
-
-        if (!$rol) {
-            $this->redireccionar('roles');
-        }
+        $this->redireccionar('roles');
     }
 }

@@ -17,4 +17,9 @@ class Producto extends Model
     {
         return $this->hasMany(Imagen::class);
     }
+
+    public function carritos()
+    {
+        return $this->hasMany(Carrito::class);
+    }
 }

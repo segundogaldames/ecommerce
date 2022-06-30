@@ -20,7 +20,8 @@
         <div class="container">
             <div class="flex-w flex-sb-m p-b-52">
                 <div class="flex-w flex-l-m filter-tope-group m-tb-10">
-                    Productos
+                    <h3>Productos</h3>
+                    {include file="../partials/_mensajes.tpl"}
                 </div>
 
                 <div class="flex-w flex-c-m m-tb-10">
