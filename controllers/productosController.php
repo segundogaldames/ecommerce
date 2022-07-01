@@ -42,7 +42,7 @@ class productosController extends Controller
         $this->_view->assign('titulo', 'Producto');
         $this->_view->assign('title','Detalle de Producto');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
         $this->_view->assign('producto', Producto::with('categoria','imagenes')->find($this->filtrarInt($id)));
 
         $this->_view->renderizar('view');
@@ -66,8 +66,35 @@ class productosController extends Controller
 
         if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
 
-            $this->validate('edit');
-            $this->setting('edit', $id);
+            $this->validaForm('edit',[
+                'codigo' => $this->getTexto('codigo'),
+                'nombre' => $this->getTexto('nombre'),
+                'descripcion' => $this->getTexto('descripcion'),
+                'precio' => $this->getTexto('precio'),
+                'stock' => $this->getTexto('stock'),
+                'status' => $this->getTexto('status'),
+                'categoria' => $this->getTexto('categoria')
+            ]);
+
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-',$ruta);
+
+            $producto = Producto::find($this->filtrarInt($id));
+            $producto->codigo = $this->getAlphaNum('codigo');
+            $producto->nombre = $this->getAlphaNum('nombre');
+            $producto->ruta = $ruta;
+            $producto->descripcion = $this->getAlphaNum('descripcion');
+            $producto->precio = $this->getInt('precio');
+            $producto->stock = $this->getInt('stock');
+            $producto->status = $this->getInt('status');
+            $producto->categoria_id = $this->getInt('categoria');
+            $res = $producto->save();
+
+            if ($res) {
+                Session::set('msg_success','El producto se ha modificado correctamente');
+            }else {
+                Session::set('msg_error','El producto no se ha modificado... intente nuevamente');
+            }
 
             $this->redireccionar('productos/view/' . $this->filtrarInt($id));
         }
@@ -91,8 +118,43 @@ class productosController extends Controller
         if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
             $this->_view->assign('producto',$_POST);
 
-            $this->validate('add');
-            $this->setting('add');
+            $this->validaForm('edit',[
+                'codigo' => $this->getTexto('codigo'),
+                'nombre' => $this->getTexto('nombre'),
+                'descripcion' => $this->getTexto('descripcion'),
+                'precio' => $this->getTexto('precio'),
+                'stock' => $this->getTexto('stock'),
+                'status' => $this->getTexto('status'),
+                'categoria' => $this->getTexto('categoria')
+            ]);
+
+             $producto = Producto::select('id')->where('codigo', $this->getAlphaNum('codigo'))->first();
+
+             if ($producto) {
+                $this->_view->assign('_error','El producto ingresado ya existe... intente con otro');
+                $this->_view->renderizar('add');
+                exit;
+             }
+
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-',$ruta);
+
+            $producto = new Producto;
+            $producto->codigo = $this->getAlphaNum('codigo');
+            $producto->nombre = $this->getAlphaNum('nombre');
+            $producto->ruta = $ruta;
+            $producto->descripcion = $this->getAlphaNum('descripcion');
+            $producto->precio = $this->getInt('precio');
+            $producto->stock = $this->getInt('stock');
+            $producto->status = $this->getInt('status');
+            $producto->categoria_id = $this->getInt('categoria');
+            $res = $producto->save();
+
+            if ($res) {
+                Session::set('msg_success','El producto se ha registrado correctamente');
+            }else {
+                Session::set('msg_error','El producto no se ha registrado... intente nuevamente');
+            }
 
             $this->redireccionar('productos');
         }
@@ -101,95 +163,18 @@ class productosController extends Controller
     }
 
     ####################################################################
-    public function validate($vista)
-    {
-        if (!$this->getAlphaNum ('codigo')) {
-            $error = 'Ingrese el código del producto';
-        }elseif (!$this->getAlphaNum('nombre')) {
-            $error = 'Ingrese el nombre del producto';
-        }elseif (!$this->getAlphaNum('descripcion')) {
-            $error = 'Ingrese la descripción del producto';
-        }elseif (!$this->getInt('precio')) {
-            $error = 'Ingrese el precio del producto';
-        }elseif (!$this->getInt('stock')) {
-            $error = 'Ingrese el stock del producto';
-        }elseif (!$this->getInt('status')) {
-            $error = 'Seleccione el status del producto';
-        }elseif (!$this->getInt('categoria')) {
-            $error = 'Seleccione la categoría del producto';
-        }
-
-        if (isset($error)) {
-            $this->_view->assign('_error', $error);
-            $this->_view->renderizar($vista);
-            exit;
-        }
-
-        if ($vista == 'edit') {
-            $producto = Producto::select('id')
-                ->where('codigo', $this->getAlphaNum('codigo'))
-                ->where('nombre', $this->getAlphaNum('nombre'))
-                ->where('descripcion', $this->getAlphaNum('descripcion'))
-                ->where('precio', $this->getInt('precio'))
-                ->where('stock', $this->getInt('stock'))
-                ->where('status', $this->getInt('status'))
-                ->where('categoria_id', $this->getInt('categoria'))
-                ->first();
-        }else {
-            $producto = Producto::select('id')->where('codigo', $this->getAlphaNum('codigo'))->first();
-        }
-
-        if ($producto) {
-            if ($vista == 'edit') {
-                $error = 'El producto ingresado ya existe... modifique alguno de los datos para continuar';
-            }else {
-                $error = 'El producto ingresado ya existe... intente con otro';
-            }
-
-            $this->_view->assign('_error', $error);
-            $this->_view->renderizar($vista);
-            exit;
-        }
-    }
-
-    public function setting($view, $data = null)
-    {
-        if ($view == 'edit') {
-            $producto = Producto::find($this->filtrarInt($data));
-        }else {
-            $producto = new Producto;
-        }
-
-        $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
-        $ruta = str_replace(' ','-',$ruta);
-
-        $producto->codigo = $this->getAlphaNum('codigo');
-        $producto->nombre = $this->getAlphaNum('nombre');
-        $producto->ruta = $ruta;
-        $producto->descripcion = $this->getAlphaNum('descripcion');
-        $producto->precio = $this->getInt('precio');
-        $producto->stock = $this->getInt('stock');
-        $producto->status = $this->getInt('status');
-        $producto->categoria_id = $this->getInt('categoria');
-        $res = $producto->save();
-
-        if ($res) {
-            Session::set('msg_success','El producto se ha ingresado correctamente');
-        }else {
-            Session::set('msg_error','El producto no se ha ingresado... intente nuevamente');
-        }
-    }
 
     private function verificarProducto($id)
     {
-        if (!$this->filtrarInt($id)) {
-            $this->redireccionar('productos');
+        if ($this->filtrarInt($id)) {
+            $producto = Producto::select('id')->find($this->filtrarInt($id));
+
+            if ($producto) {
+                return true;
+            }
         }
 
-        $producto = Producto::select('id')->find($this->filtrarInt($id));
+        $this->redireccionar('productos');
 
-        if (!$producto) {
-            $this->redireccionar('productos');
-        }
     }
 }

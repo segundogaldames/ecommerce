@@ -32,7 +32,7 @@
             <nav class="limiter-menu-desktop container">
 
                 <!-- Logo desktop -->
-                <a href="#" class="logo">
+                <a href="{$_layoutParams.root}" class="logo">
                     <img src="{$_layoutParams.ruta_shop}images/icons/logo-01.png" alt="Tienda Virtual">
                 </a>
 
@@ -82,7 +82,7 @@
     <div class="wrap-header-mobile">
         <!-- Logo moblie -->
         <div class="logo-mobile">
-            <a href="index.html"><img src="{$_layoutParams.ruta_shop}images/icons/logo-01.png" alt="Tienda Virtual"></a>
+            <a href="{$_layoutParams.root}"><img src="{$_layoutParams.ruta_shop}images/icons/logo-01.png" alt="Tienda Virtual"></a>
         </div>
 
         <!-- Icon header -->
@@ -92,7 +92,7 @@
             </div>
 
             <div class="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-                data-notify="2">
+                data-notify="{if isset(Session::get('contador'))}{Session::get('contador')}{else}0{/if}">
                 <i class="zmdi zmdi-shopping-cart"></i>
             </div>
 
@@ -143,7 +143,7 @@
             </li>
 
             <li>
-                <a href="#">Tienda</a>
+                <a href="{$_layoutParams.root}tienda">Tienda</a>
             </li>
 
             <li>
@@ -180,7 +180,7 @@
     <div class="header-cart flex-col-l p-l-65 p-r-25">
         <div class="header-cart-title flex-w flex-sb-m p-b-8">
             <span class="mtext-103 cl2">
-                Tu Carro
+                Tu Carrito
             </span>
 
             <div class="fs-35 lh-10 cl2 p-lr-5 pointer hov-cl1 trans-04 js-hide-cart">
@@ -193,14 +193,17 @@
                 {if isset(Session::get('carrito')) && count(Session::get('carrito'))}
                     {{foreach from=Session::get('carrito') item=carrito }}
                         <li class="header-cart-item flex-w flex-t m-b-12">
-                            <div class="header-cart-item-img">
-                                {{foreach from=$carrito->producto->imagenes item=imagen}}
-                                   {if $imagen.portada == 1}
-                                    <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG">
+                            <a href="{$_layoutParams.root}ventas/deleteProducto/{$carrito.producto.ruta}" title="Eliminar producto">
+                                <div class="header-cart-item-img">
+                                    {{foreach from=$carrito->producto->imagenes item=imagen}}
+                                    {if $imagen.portada == 1}
+                                        <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG">
 
-                                   {/if}
-                                {{/foreach}}
-                            </div>
+                                    {/if}
+                                    {{/foreach}}
+                                </div>
+
+                            </a>
 
                             <div class="header-cart-item-txt p-t-8">
                                 <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
@@ -215,7 +218,7 @@
 
                     {{/foreach}}
                 {{else}}
-                    <p class="text-info">tu carro está vacío</p>
+                    <p class="text-info">Tu carro está vacío</p>
                 {/if}
 
 
@@ -233,9 +236,9 @@
                         Ver Carro
                     </a>
 
-                    <a href="shoping-cart.html"
+                    <a href="#"
                         class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-                        Check Out
+                        Pagar
                     </a>
                 </div>
             </div>

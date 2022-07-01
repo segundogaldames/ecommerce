@@ -59,14 +59,31 @@ class categoriasController extends Controller
         $this->_view->assign('button','Editar');
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('categoria', Categoria::find($this->filtrarInt($id)));
-        $this->_view->assign('enviar', $this->encrypt(CTRL));
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
-            $this->_view->assign('categoria', $_POST);
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
 
-            $this->validate('edit');
+            $this->validaForm('edit',[
+                'nombre' => $this->getTexto('nombre'),
+                'descripcion' => $this->getTexto('descripcion'),
+                'status' => $this->getTexto('status')
+            ]);
 
-            $this->setting('edit', $id);
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-', $ruta);
+
+            $categoria = Categoria::find($this->filtrarInt($id));
+            $categoria->nombre = $this->getTexto('nombre');
+            $categoria->ruta = $ruta;
+            $categoria->descripcion = $this->getTexto('descripcion');
+            $categoria->status = $this->getInt('status');
+            $res = $categoria->save();
+
+            if ($res) {
+                Session::set('msg_success','La categoria se ha modificado correctamente');
+            }else {
+                Session::set('msg_error','La categoria no se ha modificado... intente nuevamente');
+            }
 
             $this->redireccionar('categorias/view/' . $this->filtrarInt($id));
         }
@@ -76,7 +93,7 @@ class categoriasController extends Controller
 
     public function newImagen($id = null)
     {
-        if ($this->permisos->escribir != 1) {
+        if ($this->permisos->actualizar != 1) {
             $this->redireccionar('error/noPermit');
         }
 
@@ -85,9 +102,9 @@ class categoriasController extends Controller
         $this->_view->assign('titulo', 'Imagen Categoria');
         $this->_view->assign('title','Cambiar Imagen Categoría');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', $this->encrypt(CTRL));
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
 
             $imagen = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
@@ -101,9 +118,9 @@ class categoriasController extends Controller
                 $res = $categoria->save();
 
                 if ($res) {
-                Session::set('msg_success','La imagen se ha modificado correctamente');
+                    Session::set('msg_success','La imagen se ha modificado correctamente');
                 }else {
-                Session::set('msg_error','La imagen no se ha modificado... intente nuevamente');
+                    Session::set('msg_error','La imagen no se ha modificado... intente nuevamente');
                 }
             }
 
@@ -123,13 +140,46 @@ class categoriasController extends Controller
         $this->_view->assign('title','Nueva Categoría');
         $this->_view->assign('button','Guardar');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', $this->encrypt(CTRL));
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if (CTRL == $this->decrypt($this->getAlphaNum('enviar'))) {
+        if ($this->decrypt($this->getAlphaNum('enviar') == Session::get('usuario_id'))) {
             $this->_view->assign('categoria', $_POST);
 
-            $this->validate('add');
-            $this->setting('add');
+            $this->validaForm('add',[
+                'nombre' => $this->getTexto('nombre'),
+                'descripcion' => $this->getTexto('descripcion'),
+                'status' => $this->getTexto('status')
+            ]);
+
+            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = str_replace(' ','-', $ruta);
+
+            $imagen = $_FILES['imagen']['name'];
+            $tmp_name = $_FILES['imagen']['tmp_name'];
+            $upload = $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/public/img/categorias/';
+            $fichero = $upload . basename($_FILES['imagen']['name']);
+
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $fichero)) {
+                $categoria = new Categoria;
+                $categoria->nombre = $this->getSql('nombre');
+                $categoria->ruta = $ruta;
+                $categoria->descripcion = $this->getSql('descripcion');
+                $categoria->portada = $imagen;
+                $categoria->status = $this->getInt('status');
+                $res = $categoria->save();
+
+            }else{
+                $this->_view->assign('_error','Seleccione una imagen para continuar...');
+                $this->_view->renderizar('add');
+                exit;
+            }
+
+            if ($res) {
+                Session::set('msg_success','La categoria se ha registrado correctamente');
+            }else {
+                Session::set('msg_error','La categoria no se ha registrado... intente nuevamente');
+            }
+
             $this->redireccionar('categorias');
         }
 
@@ -147,84 +197,6 @@ class categoriasController extends Controller
 
         if (!$categoria) {
             $this->redireccionar('categorias');
-        }
-    }
-
-    public function validate($view)
-    {
-        if (!$this->getSql('nombre')) {
-            $error = 'Ingrese el nombre de la categoría';
-        }elseif (!$this->getSql('descripcion')) {
-            $error = 'Ingrese la descripción de la categoría';
-        }elseif (!$this->getInt('status')) {
-            $error = 'Seleccione el status de la categoría';
-        }
-
-        if (isset($error)) {
-            $this->_view->assign('_error', $error);
-            $this->_view->renderizar($view);
-            exit;
-        }
-
-        if ($view == 'edit') {
-            $categoria = Categoria::select('id')
-                ->where('nombre', $this->getSql('nombre'))
-                ->where('descripcion', $this->getSql('descripcion'))
-                ->where('status', $this->getInt('status'))
-                ->first();
-
-            if ($categoria) {
-                $this->_view->assign('_error','La categoría ingresada ya existe... modifique alguno de los datos para
-                continuar');
-                $this->_view->renderizar($view);
-                exit;
-            }
-        }else {
-            $categoria = Categoria::select('id')->where('nombre', $this->getSql('nombre'))->first();
-
-            if ($categoria) {
-                $this->_view->assign('_error','La categoría ingresada ya existe... intente con otra');
-                $this->_view->renderizar($view);
-                exit;
-            }
-        }
-    }
-
-    public function setting($view, $data = null)
-    {
-        if ($view == 'edit') {
-            $categoria = Categoria::find($this->filtrarInt($data));
-        }else {
-            $imagen = $_FILES['imagen']['name'];
-            $tmp_name = $_FILES['imagen']['tmp_name'];
-            $upload = $_SERVER['DOCUMENT_ROOT'] . '/ecommerce/public/img/categorias/';
-            $fichero = $upload . basename($_FILES['imagen']['name']);
-
-            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $fichero)) {
-                # code...
-                $categoria = new Categoria;
-
-            }else{
-                $this->_view->assign('_error','Seleccione una imagen para continuar...');
-                $this->_view->renderizar('add');
-                exit;
-            }
-        }
-
-        $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
-        $ruta = str_replace(' ','-', $ruta);
-
-        $categoria->nombre = $this->getSql('nombre');
-        $categoria->ruta = $ruta;
-        $categoria->descripcion = $this->getSql('descripcion');
-        $categoria->portada = $imagen;
-        $categoria->status = $this->getInt('status');
-        $res = $categoria->save();
-
-        if ($res) {
-            Session::set('msg_success','La categoria se ha ingresado correctamente');
-        }else {
-            Session::set('msg_error','La categoria no se ha ingresado... intente nuevamente');
         }
     }
 }

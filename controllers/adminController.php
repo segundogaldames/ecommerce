@@ -17,15 +17,4 @@ class adminController extends Controller
 
 		$this->_view->renderizar('index');
 	}
-
-	###########################################
-	public function validate($vista)
-	{
-
-	}
-
-	public function setting($view, $data = null)
-	{
-
-	}
 }

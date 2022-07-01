@@ -12,8 +12,8 @@ abstract class Controller
 	}
 	//obliga a las clases hijas a implementar un metodo index por defecto
 	abstract function index();
-	abstract function validate($view);
-	abstract function setting($view, $data);
+	//abstract function validate($view);
+	//abstract function setting($view, $data);
 
 	protected function loadModel($modelo)
 	{
@@ -202,6 +202,24 @@ abstract class Controller
 		$data = openssl_decrypt($value, METHODENCRIPT, KEY);
 		return $data;
 	}
+
+	protected function validaForm($vista, $data)
+	{
+		if (is_array($data)) {
+			foreach ($data as $data=>$value) {
+				if ($value == '') {
+					$error = "El campo <strong>$data</strong> es obligatorio";
+				}
+
+				if (isset($error)) {
+					$this->_view->assign('_error', $error);
+					$this->_view->renderizar($vista);
+					exit;
+				}
+			}
+		}
+	}
+
 
 	public function clearCadena($cadena)
 	{

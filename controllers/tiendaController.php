@@ -40,7 +40,7 @@ class tiendaController extends Controller
         if (Session::get('autenticado')) {
             $enviar = Session::get('usuario_id');
         }else {
-            $enviar = CTRL;
+            $enviar = 'addCarrito'.CTRL;
         }
 
         $producto = Producto::with(['categoria','imagenes'])->where('ruta', $ruta)->first();
@@ -55,10 +55,6 @@ class tiendaController extends Controller
     }
 
     #########################################################
-    public function validate($vista)
-    {
-
-    }
 
     private function verificarCategoria($id)
     {
@@ -84,10 +80,5 @@ class tiendaController extends Controller
         }
 
         $this->redireccionar();
-    }
-
-    public function setting($view, $data = null)
-    {
-
     }
 }

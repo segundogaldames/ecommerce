@@ -32,9 +32,12 @@
 
     <!-- Shoping Cart -->
     <form class="bg0 p-t-75 p-b-85" method="post" action="">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                {include file="../partials/_mensajes.tpl"}
+                {if isset($carrito) && count($carrito)}
                     <div class="m-l-25 m-r--38 m-lr-0-xl">
                         <div class="wrap-table-shopping-cart">
                             <table class="table-shopping-cart">
@@ -48,29 +51,31 @@
                                 {foreach from=$carrito item=$carro}
                                     <tr class="table_row">
                                         <td class="column-1">
-                                            <div class="how-itemcart1">
-                                                {foreach from=$carro->producto->imagenes item=imagen}
-                                                    {if $imagen.portada == 1}
-                                                        <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG">
+                                            <a href="{$_layoutParams.root}ventas/deleteProducto/{$carro.producto.ruta}" title="Eliminar">
+                                                <div class="how-itemcart1">
+                                                    {foreach from=$carro->producto->imagenes item=imagen}
+                                                        {if $imagen.portada == 1}
+                                                            <img src="{$_layoutParams.root}public/img/productos/{$imagen.img}" alt="IMG">
 
-                                                    {/if}
-                                                {/foreach}
-                                            </div>
+                                                        {/if}
+                                                    {/foreach}
+                                                </div>
+                                            </a>
                                         </td>
-                                        <td class="column-2">{{$carro.producto.nombre}} </td>
+                                        <td class="column-2">
+                                            <a href="{$_layoutParams.root}tienda/producto/{$carro.producto.ruta}">
+                                                {{$carro.producto.nombre}}
+                                            </a>
+                                        </td>
                                         <td class="column-3">$ {{$carro.producto.precio|number_format:0:",":"."}} </td>
                                         <td class="column-4">
                                             <div class="wrap-num-product flex-w m-l-auto m-r-0">
-                                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i class="fs-16 zmdi zmdi-minus"></i>
-                                                </div>
+
 
                                                 <input class="mtext-104 cl3 txt-center num-product" type="number"
                                                     name="num-product1" value="{$carro.cantidad}">
 
-                                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i class="fs-16 zmdi zmdi-plus"></i>
-                                                </div>
+
                                             </div>
                                         </td>
                                         <td class="column-5">
@@ -84,25 +89,12 @@
 
 
                             </table>
-                        </div>
 
-                        <div class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm">
-                            <div class="flex-w flex-m m-r-20 m-tb-5">
-                                <input class="stext-104 cl2 plh4 size-117 bor13 p-lr-20 m-r-10 m-tb-5" type="text"
-                                    name="coupon" placeholder="Coupon Code">
-
-                                <div
-                                    class="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
-                                    Apply coupon
-                                </div>
-                            </div>
-
-                            <div
-                                class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
-                                Update Cart
-                            </div>
                         </div>
                     </div>
+                    {else}
+                        <p class="text-info">Tu carrito está vacío</p>
+                    {/if}
                 </div>
 
                 <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
@@ -120,7 +112,7 @@
 
                             <div class="size-209">
                                 <span class="mtext-110 cl2">
-                                    $79.65
+                                    $ {{$total|number_format:0:",":"."}}
                                 </span>
                             </div>
                         </div>
@@ -182,13 +174,13 @@
 
                             <div class="size-209 p-t-1">
                                 <span class="mtext-110 cl2">
-                                    $79.65
+                                    $ {{$total|number_format:0:",":"."}}
                                 </span>
                             </div>
                         </div>
 
                         <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                            Proceed to Checkout
+                            Pagar
                         </button>
                     </div>
                 </div>

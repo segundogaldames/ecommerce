@@ -24,12 +24,15 @@ class loginController extends Controller
         $this->_view->assign('titulo', 'Usuario Login');
         $this->_view->assign('title','Login de Usuario');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', CTRL);
+        $this->_view->assign('enviar', $this->encrypt('login' . CTRL));
 
-        if ($this->getAlphaNum('enviar') == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == ('login' . CTRL)) {
 
         //print_r($_POST);exit;
-            $this->validate('login');
+            $this->validaForm('login',[
+                'email' => $this->validarEmail($this->getPostParam('email')),
+                'clave' => $this->getSql('clave')
+            ]);
 
             $usuario = Usuario::with('rol')
                 ->where('email', $this->getPostParam('email'))
@@ -51,6 +54,8 @@ class loginController extends Controller
             Session::set('usuario_rol', $usuario->rol->nombre);
             Session::set('tiempo', time());
 
+            $this->vaciarCarrito();
+
             $this->redireccionar();
         }
 
@@ -62,12 +67,8 @@ class loginController extends Controller
         // $acceso = Usuario::find(Session::get('ingreso'));
         // $acceso->save();
 
-        $carrito = Carrito::where('usuario_id', Session::get('usuario_id'))->where('status',1)->get();
 
-        foreach ($carrito as $carr) {
-            $carr->delete();
-        }
-
+        $this->vaciarCarrito();
         Session::destroy();
 
 
@@ -75,29 +76,22 @@ class loginController extends Controller
     }
 
     #############################################################
-    public function validate($vista)
-    {
-        if (!$this->validarEmail($this->getPostParam('email'))) {
-            $this->_view->assign('_error','Ingrese su correo electrónico');
-            $this->_view->renderizar($vista);
-            exit;
-        }
 
-        if (!$this->getSql('clave')) {
-            $this->_view->assign('_error','Ingrese su password');
-            $this->_view->renderizar($vista);
-            exit;
-        }
-    }
-
-    public function setting($view, $data = null)
-    {
-
-    }
     private function encriptar($clave)
     {
         $clave = Hash::getHash('sha1', $clave, HASH_KEY);
 
         return $clave;
+    }
+
+    public function vaciarCarrito()
+    {
+        $carrito = Carrito::where('usuario_id', Session::get('usuario_id'))->where('status',1)->get();
+
+        if ($carrito) {
+            foreach ($carrito as $carr) {
+                $carr->delete();
+            }
+        }
     }
 }

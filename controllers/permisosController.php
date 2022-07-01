@@ -56,12 +56,29 @@ class permisosController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('ruta','permisos/permisosRol/' . $this->filtrarInt($id));
         $this->_view->assign('permiso', Permiso::find($this->filtrarInt($id)));
-        $this->_view->assign('enviar', $this->encrypt(CTRL));
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
 
-            $this->validate('edit', $id);
-            $this->setting('edit', $id);
+            $this->validaForm('edit', [
+                'leer' => $this->getTexto('leer'),
+                'escribir' => $this->getTexto('escribir'),
+                'actualizar' => $this->getTexto('actualizar'),
+                'eliminar' => $this->getTexto('eliminar')
+            ]);
+
+            $permiso = Permiso::find($this->filtrarInt($id));
+            $permiso->leer = $this->getInt('leer');
+            $permiso->escribir = $this->getInt('escribir');
+            $permiso->actualizar = $this->getInt('actualizar');
+            $permiso->eliminar = $this->getInt('eliminar');
+            $res = $permiso->save();
+
+            if ($res) {
+                Session::set('msg_success','Los permisos se han modificado correctamente');
+            }else {
+                Session::set('msg_error','Los permisos no se han modificado... intente nuevamente');
+            }
 
             $this->redireccionar('permisos/view/' . $this->filtrarInt($id));
             }
@@ -80,13 +97,44 @@ class permisosController extends Controller
         $this->_view->assign('ruta', 'permisos/permisosRol/' . $this->filtrarInt($rol));
         $this->_view->assign('modulos', Modulo::select('id','titulo')->where('status', 1)->orderBy('titulo','desc')->get());
         $this->_view->assign('rol', Rol::select('id','nombre')->find($this->filtrarInt($rol)));
-        $this->_view->assign('enviar', $this->encrypt(CTRL));
+        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
 
-        if ($this->decrypt($this->getAlphaNum('enviar')) == CTRL) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
             $this->_view->assign('permiso', $_POST);
 
-            $this->validate('add', $rol);
-            $this->setting('add', $rol);
+            $this->validaForm('add',[
+                'modulo' => $this->getTexto('modulo'),
+                'leer' => $this->getTexto('leer'),
+                'escribir' => $this->getTexto('escribir'),
+                'actualizar' => $this->getTexto('actualizar'),
+                'eliminar' => $this->getTexto('eliminar')
+            ]);
+
+            $permiso = Permiso::select('id')
+                ->where('modulo_id', $this->getInt('modulo'))
+                ->where('rol_id', $this->filtrarInt($rol))
+                ->first();
+
+            if ($permiso) {
+                $this->_view->assign('_error','El módulo seleccionado ya tiene permisos configurados... intente con otro');
+                $this->_view->renderizar('add');
+                exit;
+            }
+
+            $permiso = new Permiso;
+            $permiso->leer = $this->getInt('leer');
+            $permiso->escribir = $this->getInt('escribir');
+            $permiso->actualizar = $this->getInt('actualizar');
+            $permiso->eliminar = $this->getInt('eliminar');
+            $permiso->modulo_id = $this->getInt('modulo');
+            $permiso->rol_id = $this->filtrarInt($rol);
+            $res = $permiso->save();
+
+            if ($res) {
+                Session::set('msg_success','Los permisos se han registrado correctamente');
+            }else {
+                Session::set('msg_error','Los permisos no se han registrado... intente nuevamente');
+            }
 
             $this->redireccionar('permisos/permisosRol/' . $this->filtrarInt($rol));
         }
@@ -95,87 +143,6 @@ class permisosController extends Controller
     }
 
     #############################################################
-    public function validate($vista, $data = null)
-    {
-        if ($vista == 'add') {
-            if (!$this->getInt('modulo')) {
-            $error = 'Seleccione el módulo';
-            }
-        }
-
-        if (!$this->getInt('leer')) {
-            $error = 'Seleccione una opción de lectura';
-        }elseif (!$this->getInt('escribir')) {
-            $error = 'Seleccione una opción de escritura';
-        }elseif (!$this->getInt('actualizar')) {
-            $error = 'Seleccione una opción de actualización';
-        }elseif (!$this->getInt('eliminar')) {
-            $error = 'Seleccione una opción de eliminación';
-        }
-
-
-
-        if (isset($error)) {
-            $this->_view->assign('_error', $error);
-            $this->_view->renderizar($vista);
-            exit;
-        }
-
-        if ($vista == 'edit') {
-            $permiso = Permiso::select('id')
-                ->where('leer', $this->getInt('leer'))
-                ->where('escribir', $this->getInt('escribir'))
-                ->where('actualizar', $this->getInt('actualizar'))
-                ->where('eliminar', $this->getInt('eliminar'))
-                ->find($this->filtrarInt($data));
-        }else {
-            $permiso = Permiso::select('id')
-                ->where('modulo_id', $this->getInt('modulo'))
-                ->where('rol_id', $this->filtrarInt($data))
-                ->first();
-        }
-
-        if ($permiso) {
-            if ($vista == 'edit') {
-                $error = 'El permiso ingresado ya existe... modifique alguno de los datos para continuar';
-            }else {
-                $error = 'El permiso ingresado ya existe... intente con otro';
-            }
-
-            $this->_view->assign('_error', $error);
-            $this->_view->renderizar($vista);
-            exit;
-        }
-    }
-
-    public function setting($view, $data)
-    {
-        if ($view == 'edit') {
-            $permiso = Permiso::find($this->filtrarInt($data));
-        }else{
-            $permiso = new Permiso;
-        }
-
-        $permiso->leer = $this->getInt('leer');
-        $permiso->escribir = $this->getInt('escribir');
-        $permiso->actualizar = $this->getInt('actualizar');
-        $permiso->eliminar = $this->getInt('eliminar');
-
-        if ($view == 'add') {
-            # code...
-            $permiso->modulo_id = $this->getInt('modulo');
-            $permiso->rol_id = $this->filtrarInt($data);
-        }
-
-        $res = $permiso->save();
-
-        if ($res) {
-            Session::set('msg_success','Los permisos se han ingresado correctamente');
-        }else {
-            Session::set('msg_error','Los permisos no se han ingresado... intente nuevamente');
-        }
-
-    }
 
     private function verificarPermiso($id)
     {
