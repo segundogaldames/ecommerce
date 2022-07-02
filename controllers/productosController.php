@@ -76,8 +76,7 @@ class productosController extends Controller
                 'categoria' => $this->getTexto('categoria')
             ]);
 
-            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
-            $ruta = str_replace(' ','-',$ruta);
+            $ruta = Helper::friendlyRoute($this->getTexto('nombre'));
 
             $producto = Producto::find($this->filtrarInt($id));
             $producto->codigo = $this->getAlphaNum('codigo');
@@ -136,8 +135,7 @@ class productosController extends Controller
                 exit;
              }
 
-            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
-            $ruta = str_replace(' ','-',$ruta);
+            $ruta = Helper::friendlyRoute($this->getTexto('nombre'));
 
             $producto = new Producto;
             $producto->codigo = $this->getAlphaNum('codigo');

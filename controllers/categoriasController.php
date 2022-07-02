@@ -69,7 +69,7 @@ class categoriasController extends Controller
                 'status' => $this->getTexto('status')
             ]);
 
-            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
+            $ruta = Helper::friendlyRoute($this->getSql('nombre'));
             $ruta = str_replace(' ','-', $ruta);
 
             $categoria = Categoria::find($this->filtrarInt($id));
@@ -141,8 +141,10 @@ class categoriasController extends Controller
         $this->_view->assign('button','Guardar');
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
+        //print_r($this->encrypt(Session::get('usuario_id')));exit;
 
-        if ($this->decrypt($this->getAlphaNum('enviar') == Session::get('usuario_id'))) {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
+            //print_r($_POST);exit;
             $this->_view->assign('categoria', $_POST);
 
             $this->validaForm('add',[
@@ -151,8 +153,7 @@ class categoriasController extends Controller
                 'status' => $this->getTexto('status')
             ]);
 
-            $ruta = strtolower($this->clearCadena($this->getSql('nombre')));
-            $ruta = str_replace(' ','-', $ruta);
+            $ruta = Helper::friendlyRoute($this->getTexto('nombre'));
 
             $imagen = $_FILES['imagen']['name'];
             $tmp_name = $_FILES['imagen']['tmp_name'];
