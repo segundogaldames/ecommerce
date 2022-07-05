@@ -11,6 +11,8 @@
 			</div>
 		</div>
 		<ul class="app-menu">
+			<li><a class="app-menu__item" href="{$_layoutParams.root}"><i class="app-menu__icon fa fa-home"></i><span
+				class="app-menu__label">Home</span></a></li>
 			<li><a class="app-menu__item" href="{$_layoutParams.root}admin"><i class="app-menu__icon fa fa-dashboard"></i><span
 						class="app-menu__label">Dashboard</span></a></li>
 

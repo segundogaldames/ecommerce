@@ -37,6 +37,48 @@ class ventasController extends Controller
         $this->_view->renderizar('carritoUsuario');
     }
 
+    public function updateCarrito()
+    {
+        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
+            if ($this->getInt('cantidad') <= 0) {
+                Session::set('msg_error','La cantidad debe ser mayor a cero');
+                $this->redireccionar('ventas/carritoUsuario');
+            }
+
+            $producto = Producto::select('id')->where('ruta', $this->getTexto('producto'))->first();
+
+            //print_r($producto);exit;
+
+            $carrito = Carrito::select('id')->where('producto_id', $producto->id)->where('usuario_id', Session::get('usuario_id'))->first();
+
+            $carrito = Carrito::find($carrito->id);
+            $carrito->cantidad = $this->getInt('cantidad');
+            $res = $carrito->save();
+
+            $total = 0;
+            $contador = 0;
+
+            if ($res) {
+               Session::set('msg_success','Se ha modificado la cantidad solicitada');
+            }
+
+            $total = 0;
+            $contador = 0;
+
+            $carrito = Carrito::with('producto')->where('usuario_id', Session::get('usuario_id'))->where('status', 1)->get();
+
+            foreach ($carrito as $carro) {
+                $total = $total + ($carro->cantidad * $carro->producto->precio);
+                $contador += $carro->cantidad;
+            }
+
+            Session::set('carrito', $carrito);
+            Session::set('total', $total);
+            Session::set('contador', $contador);
+
+            $this->redireccionar('ventas/carritoUsuario');
+        }
+    }
 
     public function addCarrito()
     {
