@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form action="{$_layoutParams.root}{$ruta}" method="post">
     <div class="form-group">
         <label for="nombre" class="control-label">Nombre <span
                 class="text-danger">*</span></label>
@@ -31,6 +31,7 @@
             {/if}
         </select>
     </div>
+    <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
     <a href="{$_layoutParams.root}roles" class="btn btn-outline-primary">Cancelar</a>

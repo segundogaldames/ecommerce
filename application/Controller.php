@@ -203,8 +203,15 @@ abstract class Controller
 		return $data;
 	}
 
-	protected function validaForm($vista, $data)
+	protected function validaForm($ruta, $data)
 	{
+		if ($this->decrypt($this->getAlphaNum('enviar')) != Session::get('usuario_id')) {
+			Session::set('msg_error','Acceso indebido');
+			$this->redireccionar($ruta);
+		}
+
+		Session::set('dato',$_POST);
+
 		if (is_array($data)) {
 			foreach ($data as $data=>$value) {
 				if ($value == '') {
@@ -212,15 +219,20 @@ abstract class Controller
 				}
 
 				if (isset($error)) {
-					$this->_view->assign('_error', $error);
-					$this->_view->renderizar($vista);
-					exit;
+					Session::set('msg_error', $error);
+					$this->redireccionar($ruta);
 				}
 			}
 		}
 	}
 
-
+	protected function validaPUT($ruta)
+	{
+		if ($this->getTexto('_method') != 'PUT') {
+			Session::set('msg_error','Acceso indebido');
+			$this->redireccionar($ruta);
+		}
+	}
 
 
 	public function validarUrl($url)
