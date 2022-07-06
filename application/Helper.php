@@ -190,4 +190,11 @@ class Helper
         return $token;
     }
 
+    public static function encriptar($clave)
+    {
+        $clave = Hash::getHash('sha1', $clave, HASH_KEY);
+
+        return $clave;
+    }
+
 }

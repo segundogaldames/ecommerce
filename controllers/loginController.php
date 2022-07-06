@@ -15,51 +15,52 @@ class loginController extends Controller
 
     }
 
+    #metodo GET que carga el formulario de login
     public function login()
     {
         if (Session::get('autenticado')) {
             $this->redireccionar();
         }
+
+        $this->verificarMensajes();
         //print_r($_POST);exit;
         $this->_view->assign('titulo', 'Usuario Login');
         $this->_view->assign('title','Login de Usuario');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', $this->encrypt('login' . CTRL));
-
-        if ($this->decrypt($this->getAlphaNum('enviar')) == ('login' . CTRL)) {
-
-        //print_r($_POST);exit;
-            $this->validaForm('login',[
-                'email' => $this->validarEmail($this->getPostParam('email')),
-                'clave' => $this->getSql('clave')
-            ]);
-
-            $usuario = Usuario::with('rol')
-                ->where('email', $this->getPostParam('email'))
-                ->where('clave', $this->encriptar($this->getSql('clave')))
-                ->where('status', 1)
-                ->first();
-
-            //print_r($usuario);exit;
-
-            if (!$usuario) {
-                $this->_view->assign('_error','El email o el password no están registrados... intente nuevamente');
-                $this->_view->renderizar('login');
-                exit;
-            }
-
-            Session::set('autenticado', true);
-            Session::set('usuario_id', $usuario->id);
-            Session::set('usuario_name', $usuario->name . ' ' . $usuario->lastname);
-            Session::set('usuario_rol', $usuario->rol->nombre);
-            Session::set('tiempo', time());
-
-            $this->vaciarCarrito();
-
-            $this->redireccionar();
-        }
+        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
 
         $this->_view->renderizar('login');
+    }
+
+    #metodo POST que crea el login y la sesion
+    public function new()
+    {
+        $this->validaForm('login/login',[
+            'email' => $this->validarEmail($this->getPostParam('email')),
+            'clave' => $this->getSql('clave')
+            ]
+        );
+
+        $usuario = Usuario::with('rol')
+            ->where('email', $this->getPostParam('email'))
+            ->where('clave', Helper::encriptar($this->getSql('clave')))
+            ->where('status', 1)
+            ->first();
+
+        if (!$usuario) {
+            Session::set('msg_error', 'El email o el password no están registrados... intente nuevamente');
+            $this->redireccionar('login/login');
+        }
+
+        Session::set('autenticado', true);
+        Session::set('usuario_id', $usuario->id);
+        Session::set('usuario_name', $usuario->name . ' ' . $usuario->lastname);
+        Session::set('usuario_rol', $usuario->rol->nombre);
+        Session::set('tiempo', time());
+
+        $this->vaciarCarrito();
+
+        $this->redireccionar();
     }
 
     public function logout()
@@ -76,14 +77,6 @@ class loginController extends Controller
     }
 
     #############################################################
-
-    private function encriptar($clave)
-    {
-        $clave = Hash::getHash('sha1', $clave, HASH_KEY);
-
-        return $clave;
-    }
-
     public function vaciarCarrito()
     {
         $carrito = Carrito::where('usuario_id', Session::get('usuario_id'))->where('status',1)->get();

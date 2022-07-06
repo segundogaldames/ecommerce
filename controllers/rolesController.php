@@ -59,7 +59,7 @@ class rolesController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
         $this->_view->assign('ruta','roles/update/' . $id);
-        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
+        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
 
         $this->_view->renderizar('edit');
     }
@@ -107,7 +107,7 @@ class rolesController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Session::get('dato'));
         $this->_view->assign('ruta', 'roles/new');
-        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
+        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
 
         $this->_view->renderizar('add');
     }

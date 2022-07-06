@@ -6,7 +6,7 @@
         <h1>Tienda Virtual</h1>
         </div>
         <div class="login-box">
-        <form class="login-form" action="" method="post">
+        <form class="login-form" action="{$_layoutParams.root}login/new" method="post">
             {include file="../partials/_mensajes.tpl"}
             <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Login</h3>
             <div class="form-group">

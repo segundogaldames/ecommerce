@@ -203,11 +203,24 @@ abstract class Controller
 		return $data;
 	}
 
+	protected function getEnviar()
+	{
+		$hoy = getdate();
+		$hoy = $hoy['year']. $hoy['month'] . $hoy['mday'] . $hoy['hours'];
+		if (Session::get('autenticado')) {
+			$enviar = Session::get('usuario_name') . $hoy;
+		}else {
+			$enviar = CTRL . $hoy;
+		}
+
+		return $enviar;
+	}
+
 	protected function validaForm($ruta, $data)
 	{
-		if ($this->decrypt($this->getAlphaNum('enviar')) != Session::get('usuario_id')) {
-			Session::set('msg_error','Acceso indebido');
-			$this->redireccionar($ruta);
+		//$enviar = $this->getEnviar();
+		if ($this->decrypt($this->getAlphaNum('enviar')) != $this->getEnviar()) {
+			$this->redireccionar('error/noPermit');
 		}
 
 		Session::set('dato',$_POST);

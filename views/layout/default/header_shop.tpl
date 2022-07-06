@@ -5,7 +5,9 @@
         <div class="top-bar">
             <div class="content-topbar flex-sb-m h-full container">
                 <div class="left-top-bar">
-                    Mensaje de bienvenida
+                   {if isset(Session::get('autenticado'))}
+                        Bienvenid@ {{Session::get('usuario_name')}}
+                   {/if}
                 </div>
 
                 <div class="right-top-bar flex-w h-full">
