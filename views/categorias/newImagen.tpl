@@ -21,14 +21,14 @@
                 {include file="../partials/_mensajes.tpl"}
 
                 <p class="text-danger">Campos obligatorios</p>
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="{$_layoutParams.root}{$ruta}" method="post" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label for="imagen" class="control-label">Imagen <span class="text-danger">*</span></label>
                         <input type="file" name="imagen" class="form-control" id="" aria-describedby=""
                             placeholder="Imagen de la categoría">
                     </div>
-
+                    <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="enviar" value="{$enviar}">
                     <button type="submit" class="btn btn-outline-success">Cambiar</button>
                     <a href="{$_layoutParams.root}categorias" class="btn btn-outline-primary">Cancelar</a>

@@ -59,14 +59,14 @@ class rolesController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Rol::find($this->filtrarInt($id)));
         $this->_view->assign('ruta','roles/update/' . $id);
-        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('edit');
     }
 
     public function update($id = null)
     {
-        $this->validaPUT('roles/edit/' . $id);
+        $this->validaPUT();
         $this->verificarRol($id);
 
         $this->validaForm('roles/edit/'.$id,
@@ -107,7 +107,7 @@ class rolesController extends Controller
         $this->_view->assign('tema', $this->tema);
         $this->_view->assign('rol', Session::get('dato'));
         $this->_view->assign('ruta', 'roles/new');
-        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('add');
     }

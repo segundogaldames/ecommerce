@@ -12,8 +12,11 @@ abstract class Controller
 	}
 	//obliga a las clases hijas a implementar un metodo index por defecto
 	abstract function index();
-	//abstract function validate($view);
-	//abstract function setting($view, $data);
+	abstract function view($id = null);
+	abstract function add();
+	abstract function new();
+	abstract function edit($id = null);
+	abstract function update($id = null);
 
 	protected function loadModel($modelo)
 	{
@@ -203,7 +206,7 @@ abstract class Controller
 		return $data;
 	}
 
-	protected function getEnviar()
+	protected function getForm()
 	{
 		$hoy = getdate();
 		$hoy = $hoy['year']. $hoy['month'] . $hoy['mday'] . $hoy['hours'];
@@ -218,8 +221,8 @@ abstract class Controller
 
 	protected function validaForm($ruta, $data)
 	{
-		//$enviar = $this->getEnviar();
-		if ($this->decrypt($this->getAlphaNum('enviar')) != $this->getEnviar()) {
+		//print_r($data);exit;
+		if ($this->decrypt($this->getAlphaNum('enviar')) != $this->getForm()) {
 			$this->redireccionar('error/noPermit');
 		}
 
@@ -239,11 +242,10 @@ abstract class Controller
 		}
 	}
 
-	protected function validaPUT($ruta)
+	protected function validaPUT()
 	{
 		if ($this->getTexto('_method') != 'PUT') {
-			Session::set('msg_error','Acceso indebido');
-			$this->redireccionar($ruta);
+			$this->redireccionar('error/noPermit');
 		}
 	}
 

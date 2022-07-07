@@ -15,6 +15,26 @@ class loginController extends Controller
 
     }
 
+    public function view($id = null)
+    {
+
+    }
+
+    public function edit($id = null)
+    {
+
+    }
+
+    public function update($id = null)
+    {
+
+    }
+
+    public function add()
+    {
+
+    }
+
     #metodo GET que carga el formulario de login
     public function login()
     {
@@ -27,7 +47,7 @@ class loginController extends Controller
         $this->_view->assign('titulo', 'Usuario Login');
         $this->_view->assign('title','Login de Usuario');
         $this->_view->assign('tema', $this->tema);
-        $this->_view->assign('enviar', $this->encrypt($this->getEnviar()));
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('login');
     }

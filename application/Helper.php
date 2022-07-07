@@ -196,5 +196,4 @@ class Helper
 
         return $clave;
     }
-
 }

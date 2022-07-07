@@ -1,4 +1,4 @@
-<form action="" method="post" enctype="multipart/form-data">
+<form action="{$_layoutParams.root}{$ruta}" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="nombre" class="control-label">Nombre <span class="text-danger">*</span></label>
         <input type="text" name="nombre" value="{$categoria.nombre|default:""}" class="form-control" id="" aria-describedby=""
@@ -38,6 +38,7 @@
                 aria-describedby="" placeholder="Imagen de la categoría">
         </div>
     {/if}
+    <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
     <a href="{$_layoutParams.root}categorias" class="btn btn-outline-primary">Cancelar</a>
