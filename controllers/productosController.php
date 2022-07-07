@@ -101,6 +101,11 @@ class productosController extends Controller
         $this->_view->renderizar('edit');
     }
 
+    public function update($id = null)
+    {
+
+    }
+
     public function add()
     {
         if ($this->permiso->escribir!=1) {
@@ -158,6 +163,11 @@ class productosController extends Controller
         }
 
         $this->_view->renderizar('add');
+    }
+
+    public function new()
+    {
+
     }
 
     ####################################################################

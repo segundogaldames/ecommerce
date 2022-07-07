@@ -1,4 +1,4 @@
-<form action="" method="post" enctype="multipart/form-data">
+<form action="{$_layoutParams.root}{$ruta}" method="post" enctype="multipart/form-data">
     {if $button == 'Editar'}
         <div class="form-group">
             <label for="portada" class="control-label">Portada <span class="text-danger">*</span></label>
@@ -20,6 +20,7 @@
         </div>
     {/if}
 
+    <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
     <a href="{$_layoutParams.root}productos" class="btn btn-outline-primary">Cancelar</a>
