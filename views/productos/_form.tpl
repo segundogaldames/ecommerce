@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form action="{$_layoutParams.root}{$ruta}" method="post">
     <div class="form-group">
         <label for="codigo" class="control-label">Código <span class="text-danger">*</span></label>
         <input type="text" name="codigo" value="{$producto.codigo|default:""}" class="form-control" id=""
@@ -62,6 +62,7 @@
         </select>
     </div>
 
+    <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
     <a href="{$_layoutParams.root}productos" class="btn btn-outline-primary">Cancelar</a>
