@@ -14,6 +14,11 @@ class ventasController extends Controller
 
     }
 
+    public function view($id = null)
+    {
+
+    }
+
     public function carritoUsuario()
     {
         $this->verificarSession();
@@ -78,6 +83,16 @@ class ventasController extends Controller
 
             $this->redireccionar('ventas/carritoUsuario');
         }
+    }
+
+    public function edit($id = null)
+    {
+
+    }
+
+    public function update($id = null)
+    {
+
     }
 
     public function addCarrito()
@@ -190,5 +205,15 @@ class ventasController extends Controller
         }
 
         $this->redireccionar('ventas/carritoUsuario');
+    }
+
+    public function add()
+    {
+
+    }
+
+    public function new()
+    {
+
     }
 }
