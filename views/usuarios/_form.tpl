@@ -1,4 +1,4 @@
-<form action="" method="post">
+<form action="{$_layoutParams.root}{$ruta}" method="post">
     <div class="form-group">
         <label for="rut" class="control-label">RUT<span class="text-danger">*</span></label>
         <input type="text" name="rut" value="{$usuario.rut|default:""}" class="form-control" id="" aria-describedby=""
@@ -65,6 +65,8 @@
             </select>
         </div>
     {/if}
+
+    <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="enviar" value="{$enviar}">
     <button type="submit" class="btn btn-outline-success">{$button}</button>
     <a href="{$_layoutParams.root}usuarios" class="btn btn-outline-primary">Cancelar</a>

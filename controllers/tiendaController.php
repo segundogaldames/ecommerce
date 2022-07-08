@@ -20,6 +20,11 @@ class tiendaController extends Controller
         $this->_view->renderizar('index');
     }
 
+    public function view($id = null)
+    {
+
+    }
+
     public function categoria($ruta = null)
     {
         $categoria = Categoria::where('ruta', $ruta)->first();
@@ -52,6 +57,26 @@ class tiendaController extends Controller
         $this->_view->assign('enviar', $this->encrypt($enviar));
 
         $this->_view->renderizar('producto');
+    }
+
+    public function edit($id = null)
+    {
+
+    }
+
+    public function update($id = null)
+    {
+
+    }
+
+    public function add()
+    {
+
+    }
+
+    public function new()
+    {
+
     }
 
     #########################################################

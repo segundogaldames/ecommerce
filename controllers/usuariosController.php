@@ -73,47 +73,57 @@ class usuariosController extends Controller
         }
 
         $this->verificarUsuario($id);
+        $this->verificarMensajes();
 
         $this->_view->assign('titulo','Editar Usuario');
         $this->_view->assign('title','Editar Usuario');
         $this->_view->assign('button','Editar');
         $this->_view->assign('tema', $this->tema);
+        $this->_view->assign('ruta', 'usuarios/update/' . $id);
         $this->_view->assign('roles', Rol::select('id','nombre')->orderBy('id','asc')->get());
         $this->_view->assign('usuario', Usuario::with('rol')->find($this->filtrarInt($id)));
-        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
-
-        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
-
-            $this->validaForm('edit',[
-                'rut' => $this->getSql('rut'),
-                'name' => $this->getTexto('name'),
-                'lastname' => $this->getTexto('lastname'),
-                'email' => $this->validarEmail($this->getPostParam('email')),
-                'phone' => $this->getTexto('phone'),
-                'status' => $this->getTexto('status'),
-                'rol' => $this->getTexto('rol')
-            ]);
-
-            $usuario = Usuario::find($this->filtrarInt($id));
-            $usuario->rut = $this->getSql('rut');
-            $usuario->name = $this->getSql('name');
-            $usuario->lastname = $this->getSql('lastname');
-            $usuario->email = $this->getPostParam('email');
-            $usuario->phone = $this->getSql('phone');
-            $usuario->status = $this->getInt('status');
-            $usuario->rol_id = $this->getInt('rol');
-            $res = $usuario->save();
-
-            if ($res) {
-                Session::set('msg_success','El usuario se ha modificado correctamente');
-            }else {
-            Session::set('msg_error','El usuario no se ha modificado... intente nuevamente');
-            }
-
-            $this->redireccionar('usuarios/view/' . $this->filtrarInt($id));
-        }
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('edit');
+    }
+
+    public function update($id = null)
+    {
+        $this->verificarSession();
+
+        if ($this->permiso->actualizar != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
+        $this->validaPUT();
+
+        $this->validaForm('usuarios/edit/'.$id,[
+            'rut' => $this->getSql('rut'),
+            'name' => $this->getTexto('name'),
+            'lastname' => $this->getTexto('lastname'),
+            'email' => $this->validarEmail($this->getPostParam('email')),
+            'phone' => $this->getTexto('phone'),
+            'status' => $this->getTexto('status'),
+            'rol' => $this->getTexto('rol')
+        ]);
+
+        $usuario = Usuario::find($this->filtrarInt($id));
+        $usuario->rut = $this->getSql('rut');
+        $usuario->name = $this->getSql('name');
+        $usuario->lastname = $this->getSql('lastname');
+        $usuario->email = $this->getPostParam('email');
+        $usuario->phone = $this->getSql('phone');
+        $usuario->status = $this->getInt('status');
+        $usuario->rol_id = $this->getInt('rol');
+        $res = $usuario->save();
+
+        if ($res) {
+            Session::set('msg_success','El usuario se ha modificado correctamente');
+        }else {
+            Session::set('msg_error','El usuario no se ha modificado... intente nuevamente');
+        }
+
+        $this->redireccionar('usuarios/view/' . $this->filtrarInt($id));
     }
 
     public function resetPassword()
@@ -184,7 +194,7 @@ class usuariosController extends Controller
             }
 
             $usuario = Usuario::find($this->getInt('user'));
-            $usuario->clave = $this->encriptar($this->getSql('clave'));
+            $usuario->clave = Helper::encriptar($this->getSql('clave'));
             $res = $usuario->save();
 
             if ($res) {
@@ -233,7 +243,7 @@ class usuariosController extends Controller
             }
 
             $usuario = Usuario::select('id')
-                        ->where('clave', $this->encriptar($this->getSql('claveactual')))
+                        ->where('clave', Helper::encriptar($this->getSql('claveactual')))
                         ->find(Session::get('usuario_id'));
 
             if (!$usuario) {
@@ -243,7 +253,7 @@ class usuariosController extends Controller
             }
 
             $usuario = Usuario::find(Session::get('usuario_id'));
-            $usuario->clave = $this->encriptar($this->getSql('clave'));
+            $usuario->clave = Helper::encriptar($this->getSql('clave'));
             $res = $usuario->save();
 
             if ($res) {
@@ -266,68 +276,70 @@ class usuariosController extends Controller
             $this->redireccionar('error/noPermit');
         }
 
+        $this->verificarMensajes();
+
         $this->_view->assign('titulo','Nuevo Usuario');
         $this->_view->assign('title','Nuevo Usuario');
         $this->_view->assign('button','Guardar');
         $this->_view->assign('tema', $this->tema);
+        $this->_view->assign('ruta','usuarios/new');
+        $this->_view->assign('usuario', Session::get('dato'));
         $this->_view->assign('roles', Rol::select('id','nombre')->orderBy('id','asc')->get());
-        $this->_view->assign('enviar', $this->encrypt(Session::get('usuario_id')));
-
-        if ($this->decrypt($this->getAlphaNum('enviar')) == Session::get('usuario_id')) {
-            $this->_view->assign('usuario', $_POST);
-
-            $this->validaForm('add',[
-                'rut' => $this->getSql('rut'),
-                'name' => $this->getTexto('name'),
-                'lastname' => $this->getTexto('lastname'),
-                'email' => $this->validarEmail($this->getPostParam('email')),
-                'phone' => $this->getTexto('phone'),
-                'rol' => $this->getTexto('rol')
-            ]);
-
-            if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) {
-                $error='El password debe contener al menos 8 caracteres';
-            }elseif ($this->getSql('clave') != $this->getSql('reclave')) {
-                $error = 'Los passwords no coinciden';
-            }
-
-
-            if (isset($error)) {
-                $this->_view->assign('_error', $error);
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            $usuario = Usuario::select('id')->where('rut', $this->getSql('rut'))->first();
-
-            if ($usuario) {
-                $this->_view->assign('_error', 'El usuario ingresado ya existe... intente con otro');
-                $this->_view->renderizar('add');
-                exit;
-            }
-
-            $usuario = new Usuario;
-            $usuario->rut = $this->getSql('rut');
-            $usuario->name = $this->getSql('name');
-            $usuario->lastname = $this->getSql('lastname');
-            $usuario->email = $this->getPostParam('email');
-            $usuario->phone = $this->getSql('phone');
-            $usuario->status = $this->getInt('status');
-            $usuario->rol_id = $this->getInt('rol');
-            $usuario->status = 1;
-            $usuario->clave = $this->encriptar($this->getSql('clave'));
-            $res = $usuario->save();
-
-            if ($res) {
-                Session::set('msg_success','El usuario se ha registrado correctamente');
-            }else {
-                Session::set('msg_error','El usuario no se ha registrado... intente nuevamente');
-            }
-
-            $this->redireccionar('usuarios');
-        }
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('add');
+    }
+
+    public function new()
+    {
+        $this->validaForm('usuarios/add',[
+            'rut' => $this->getSql('rut'),
+            'name' => $this->getTexto('name'),
+            'lastname' => $this->getTexto('lastname'),
+            'email' => $this->validarEmail($this->getPostParam('email')),
+            'phone' => $this->getTexto('phone'),
+            'rol' => $this->getTexto('rol')
+        ]);
+
+        if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) {
+            $error='El password debe contener al menos 8 caracteres' ;
+        }elseif ($this->getSql('clave') !=
+            $this->getSql('reclave')) {
+            $error = 'Los passwords no coinciden';
+        }
+
+
+        if (isset($error)) {
+            Session::set('msg_error', $error);
+            $this->redireccionar('usuarios/add');
+        }
+
+        $usuario = Usuario::select('id')->where('rut', $this->getSql('rut'))->first();
+
+        if ($usuario) {
+            Session::set('msg_error', 'El usuario ingresado ya existe... intente con otro');
+            $this->redireccionar('usuarios/add');
+        }
+
+        $usuario = new Usuario;
+        $usuario->rut = $this->getSql('rut');
+        $usuario->name = $this->getSql('name');
+        $usuario->lastname = $this->getSql('lastname');
+        $usuario->email = $this->getPostParam('email');
+        $usuario->phone = $this->getSql('phone');
+        $usuario->status = $this->getInt('status');
+        $usuario->rol_id = $this->getInt('rol');
+        $usuario->status = 1;
+        $usuario->clave = Helper::encriptar($this->getSql('clave'));
+        $res = $usuario->save();
+
+        if ($res) {
+            Session::set('msg_success','El usuario se ha registrado correctamente');
+        }else {
+            Session::set('msg_error','El usuario no se ha registrado... intente nuevamente');
+        }
+
+        $this->redireccionar('usuarios');
     }
 
     #############################################
@@ -344,12 +356,5 @@ class usuariosController extends Controller
         }
 
         $this->redireccionar('usuarios');
-    }
-
-    private function encriptar($clave)
-    {
-        $clave = Hash::getHash('sha1', $clave, HASH_KEY);
-
-        return $clave;
     }
 }
