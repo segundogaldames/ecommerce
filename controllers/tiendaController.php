@@ -54,7 +54,7 @@ class tiendaController extends Controller
         $this->_view->assign('titulo', 'Producto');
         $this->_view->assign('producto', $producto);
         $this->_view->assign('productos', Producto::with(['categoria','imagenes'])->where('categoria_id', $producto->categoria_id)->get());
-        $this->_view->assign('enviar', $this->encrypt($enviar));
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('producto');
     }

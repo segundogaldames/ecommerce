@@ -50,7 +50,7 @@
                                     <th class="column-3"></th>
                                 </tr>
                                 {foreach from=$carrito item=$carro}
-                                    <form action="{$_layoutParams.root}ventas/updateCarrito" method="post">
+                                    <form action="{$_layoutParams.root}ventas/updateCarrito/{{$carro.producto.ruta}} " method="post">
                                         <tr class="table_row">
                                             <td class="column-1">
                                                 <a href="{$_layoutParams.root}ventas/deleteProducto/{$carro.producto.ruta}"
@@ -92,7 +92,6 @@
                                                 $ {{$valor|number_format:0:",":"."}}
                                             </td>
                                             <td>
-                                                <input type="hidden" name="producto" value="{$carro.producto.ruta}">
                                                 <input type="hidden" name="enviar" value="{$enviar}">
                                                 <button type="submit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
                                             </td>
@@ -156,10 +155,10 @@
                             </span>
                         </div>
                     </div>
-
-                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                        Pagar
-                    </button>
+                        <a href="{$_layoutParams.root}ventas/procesarPago"
+                            class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
+                            Procesar Pago
+                        </a>
                 </div>
             </div>
         </div>
