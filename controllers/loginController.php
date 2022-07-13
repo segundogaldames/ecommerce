@@ -47,7 +47,9 @@ class loginController extends Controller
         $this->_view->assign('titulo', 'Usuario Login');
         $this->_view->assign('title','Login de Usuario');
         $this->_view->assign('tema', $this->tema);
+        $this->_view->assign('usuario', Session::get('dato'));
         $this->_view->assign('enviar', $this->encrypt($this->getForm()));
+        $this->_view->assign('send', $this->encrypt($this->getForm()));
 
         $this->_view->renderizar('login');
     }

@@ -154,6 +154,14 @@ class ventasController extends Controller
         $this->redireccionar('ventas/carritoUsuario');
     }
 
+    public function procesarPago()
+    {
+        $this->getCarrito();
+        $this->_view->assign('titulo','Procesar Pago');
+        $this->_view->assign('enviar', $this->encrypt($this->getForm()));
+        $this->_view->renderizar('procesarPago');
+    }
+
     public function add()
     {
 

@@ -9,12 +9,13 @@ class usuariosController extends Controller
     {
         parent::__construct();
         $this->tema = 'Usuarios del sistema';
-        $this->permiso = $this->getPermisos('Usuarios');
+        //$this->permiso = $this->getPermisos('Usuarios');
     }
 
     public function index()
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->leer != 1) {
             $this->redireccionar('error/noPermit');
@@ -32,6 +33,7 @@ class usuariosController extends Controller
     public function view($id = null)
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->leer != 1) {
             $this->redireccionar('error/noPermit');
@@ -50,6 +52,7 @@ class usuariosController extends Controller
     public function perfil()
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->leer != 1) {
             $this->redireccionar('error/noPermit');
@@ -67,6 +70,7 @@ class usuariosController extends Controller
     public function edit($id = null)
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->actualizar != 1) {
             $this->redireccionar('error/noPermit');
@@ -90,6 +94,7 @@ class usuariosController extends Controller
     public function update($id = null)
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->actualizar != 1) {
             $this->redireccionar('error/noPermit');
@@ -212,6 +217,7 @@ class usuariosController extends Controller
     public function editPassword($id = null)
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->actualizar != 1) {
             $this->redireccionar('error/noPermit');
@@ -271,6 +277,7 @@ class usuariosController extends Controller
     public function add()
     {
         $this->verificarSession();
+        $this->permiso = $this->getPermisos('Usuarios');
 
         if ($this->permiso->escribir != 1) {
             $this->redireccionar('error/noPermit');
@@ -292,6 +299,14 @@ class usuariosController extends Controller
 
     public function new()
     {
+        $this->verificarSession();
+
+        $this->permiso = $this->getPermisos('Usuarios');
+
+        if ($this->permiso->escribir != 1) {
+            $this->redireccionar('error/noPermit');
+        }
+
         $this->validaForm('usuarios/add',[
             'rut' => $this->getSql('rut'),
             'name' => $this->getTexto('name'),
@@ -340,6 +355,64 @@ class usuariosController extends Controller
         }
 
         $this->redireccionar('usuarios');
+    }
+
+    public function newCliente()
+    {
+        $this->validaForm('login/login',[
+            'rut' => $this->getSql('rut'),
+            'name' => $this->getTexto('name'),
+            'lastname' => $this->getTexto('lastname'),
+            'email' => $this->validarEmail($this->getPostParam('email')),
+            'phone' => $this->getTexto('phone'),
+            'password' => $this->getSql('clave')
+        ]);
+
+        if (!$this->validaRut($this->getSql('rut'))) {
+            Session::set('msg_error','Ingrese un RUT válido');
+            $this->redireccionar('login/login');
+        }
+
+        if (strlen($this->getSql('clave')) < 8) {
+            Session::set('msg_error', 'El password debe contener al menos 8 caracteres');
+            $this->redireccionar('login/login');
+        }
+
+        if ($this->getSql('clave') != $this->getSql('reclave')) {
+            Session::set('msg_error', 'Los passwords no coinciden');
+            $this->redireccionar('login/login');
+        }
+
+        $usuario = Usuario::select('id')
+            ->where('rut', $this->getSql('rut'))
+            ->where('email', $this->getPostParam('email'))
+            ->first();
+
+        if ($usuario) {
+            Session::set('msg_error', 'El usuario ingresado ya existe... intente con otro');
+            $this->redireccionar('login/login');
+        }
+
+            $usuario = new Usuario;
+            $usuario->rut = $this->getSql('rut');
+            $usuario->name = $this->getSql('name');
+            $usuario->lastname = $this->getSql('lastname');
+            $usuario->email = $this->getPostParam('email');
+            $usuario->phone = $this->getSql('phone');
+            $usuario->status = $this->getInt('status');
+            $usuario->rol_id = 2;
+            $usuario->status = 1;
+            $usuario->clave = Helper::encriptar($this->getSql('clave'));
+            $res = $usuario->save();
+
+            if ($res) {
+                Session::set('msg_success','El usuario se ha registrado correctamente');
+            }else {
+                Session::set('msg_error','El usuario no se ha registrado... intente nuevamente');
+            }
+
+            Session::destroy('dato');
+            $this->redireccionar();
     }
 
     #############################################
