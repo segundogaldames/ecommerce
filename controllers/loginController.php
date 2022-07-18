@@ -10,31 +10,6 @@ class loginController extends Controller
         $this->tema = 'Ingreso de usuario';
     }
 
-    public function index()
-    {
-
-    }
-
-    public function view($id = null)
-    {
-
-    }
-
-    public function edit($id = null)
-    {
-
-    }
-
-    public function update($id = null)
-    {
-
-    }
-
-    public function add()
-    {
-
-    }
-
     #metodo GET que carga el formulario de login
     public function login()
     {

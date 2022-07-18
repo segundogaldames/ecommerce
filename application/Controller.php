@@ -3,7 +3,7 @@ use models\Modulo;
 use models\Rol;
 use models\Permiso;
 //esta clase no puede ser instanciada
-abstract class Controller
+class Controller
 {
 	protected $_view;
 
@@ -11,12 +11,6 @@ abstract class Controller
 		$this->_view = new View(new Request);
 	}
 	//obliga a las clases hijas a implementar un metodo index por defecto
-	abstract function index();
-	abstract function view($id = null);
-	abstract function add();
-	abstract function new();
-	abstract function edit($id = null);
-	abstract function update($id = null);
 
 	protected function loadModel($modelo)
 	{

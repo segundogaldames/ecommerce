@@ -9,16 +9,6 @@ class ventasController extends Controller
         parent::__construct();
     }
 
-    public function index()
-    {
-
-    }
-
-    public function view($id = null)
-    {
-
-    }
-
     public function carritoUsuario()
     {
         $this->verificarSession();
@@ -76,16 +66,6 @@ class ventasController extends Controller
         $this->getCarrito();
 
         $this->redireccionar('ventas/carritoUsuario');
-    }
-
-    public function edit($id = null)
-    {
-
-    }
-
-    public function update($id = null)
-    {
-
     }
 
     public function addCarrito($producto = null)
@@ -156,20 +136,15 @@ class ventasController extends Controller
 
     public function procesarPago()
     {
+        if (!Session::get('autenticado')) {
+            Session::set('msg_error','Debes iniciar sesión o registrarte para continuar');
+            $this->redireccionar('login/login');
+        }
+
         $this->getCarrito();
         $this->_view->assign('titulo','Procesar Pago');
         $this->_view->assign('enviar', $this->encrypt($this->getForm()));
         $this->_view->renderizar('procesarPago');
-    }
-
-    public function add()
-    {
-
-    }
-
-    public function new()
-    {
-
     }
 
     ########################################################

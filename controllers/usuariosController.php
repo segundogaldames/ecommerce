@@ -262,12 +262,11 @@ class usuariosController extends Controller
             $usuario->clave = Helper::encriptar($this->getSql('clave'));
             $res = $usuario->save();
 
-            if ($res) {
-                Session::set('msg_success','El password se ha modificado correctamente');
-            }else {
+            if (!$res) {
                 Session::set('msg_error','El password no se ha modificado... intente nuevamente');
             }
 
+            Session::set('msg_success','El password se ha modificado correctamente');
             $this->redireccionar('usuarios/perfil');
         }
 
@@ -316,16 +315,13 @@ class usuariosController extends Controller
             'rol' => $this->getTexto('rol')
         ]);
 
-        if (!$this->getSql('clave') && strlen($this->getSql('clave')) < 8) {
-            $error='El password debe contener al menos 8 caracteres' ;
-        }elseif ($this->getSql('clave') !=
-            $this->getSql('reclave')) {
-            $error = 'Los passwords no coinciden';
+        if (strlen($this->getSql('clave')) < 8) {
+            Session::set('msg_error', 'El password debe contener al menos 8 caracteres');
+            $this->redireccionar('usuarios/add');
         }
 
-
-        if (isset($error)) {
-            Session::set('msg_error', $error);
+        if ($this->getSql('clave') != $this->getSql('reclave')) {
+            Session::set('msg_error', 'Los passwords no coinciden');
             $this->redireccionar('usuarios/add');
         }
 
@@ -348,12 +344,11 @@ class usuariosController extends Controller
         $usuario->clave = Helper::encriptar($this->getSql('clave'));
         $res = $usuario->save();
 
-        if ($res) {
-            Session::set('msg_success','El usuario se ha registrado correctamente');
-        }else {
+        if (!$res) {
             Session::set('msg_error','El usuario no se ha registrado... intente nuevamente');
         }
 
+        Session::set('msg_success','El usuario se ha registrado correctamente');
         $this->redireccionar('usuarios');
     }
 
@@ -393,26 +388,25 @@ class usuariosController extends Controller
             $this->redireccionar('login/login');
         }
 
-            $usuario = new Usuario;
-            $usuario->rut = $this->getSql('rut');
-            $usuario->name = $this->getSql('name');
-            $usuario->lastname = $this->getSql('lastname');
-            $usuario->email = $this->getPostParam('email');
-            $usuario->phone = $this->getSql('phone');
-            $usuario->status = $this->getInt('status');
-            $usuario->rol_id = 2;
-            $usuario->status = 1;
-            $usuario->clave = Helper::encriptar($this->getSql('clave'));
-            $res = $usuario->save();
+        $usuario = new Usuario;
+        $usuario->rut = $this->getSql('rut');
+        $usuario->name = $this->getSql('name');
+        $usuario->lastname = $this->getSql('lastname');
+        $usuario->email = $this->getPostParam('email');
+        $usuario->phone = $this->getSql('phone');
+        $usuario->status = $this->getInt('status');
+        $usuario->rol_id = 2;
+        $usuario->status = 1;
+        $usuario->clave = Helper::encriptar($this->getSql('clave'));
+        $res = $usuario->save();
 
-            if ($res) {
-                Session::set('msg_success','El usuario se ha registrado correctamente');
-            }else {
-                Session::set('msg_error','El usuario no se ha registrado... intente nuevamente');
-            }
+        if (!$res) {
+            Session::set('msg_error','No se ha podido procesar tu solicitud... intente nuevamente');
+        }
 
-            Session::destroy('dato');
-            $this->redireccionar();
+        Session::set('msg_success','Te has registrado correctamente');
+        Session::destroy('dato');
+        $this->redireccionar();
     }
 
     #############################################

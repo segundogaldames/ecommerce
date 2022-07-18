@@ -14,21 +14,6 @@ class imagenesController extends Controller
         $this->permiso = $this->getPermisos('Imagenes');
 	}
 
-	public function index()
-	{
-
-	}
-
-    public function view($id = null)
-    {
-
-    }
-
-    public function edit($id = null)
-    {
-
-    }
-
     public function editPortada($id = null)
     {
         if ($this->permiso->actualizar != 1) {

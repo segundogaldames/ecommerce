@@ -14,11 +14,6 @@ class permisosController extends Controller
         $this->tema = 'Permisos de roles y módulos';
 	}
 
-	public function index()
-	{
-
-	}
-
     public function permisosRol($rol = null)
     {
         $this->verificarRol($rol);
